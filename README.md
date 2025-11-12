@@ -6,9 +6,9 @@ As tecnologias utilizadas no desenvolvimento do AbraCaxi são: a linguagem pytho
 |Classe|Métodos|Atributos|Observações|
 |:----|:----|:----|:----|
 |Produto|ajustar_estoque, crud|nome, categoria, preco_unitario, estoque, cod| |
-|Cliente|valida_email, valida_cpf, crud|id, nome, email, cpf, cidade, cep, uf| |
+|Cliente|valida_email, valida_cpf, crud|nome, email, cpf, cidade, cep, uf| |
 |Carrinho|adicionar, remover, alterar_quant|produto, quantidade| |
-|Pedido|cancelar, gerar_nota|cliente, itens, frete, desconto, total, status.|Criar a partir do carrinho, os itens devem possuir as informações dos produtos.|
+|Pedido|cancelar, gerar_nota|cliente, produtos, frete, desconto, total, status.|Criar a partir do carrinho|
 |Pagamento|validar, registrar.|forma_pagamento, data, status.| |
 |Frete|calcular_por_cep, |prazo, cep| |
 |Expedicao|gerar_cod, marcar_entregre|cod_entrega, entrega|Dependerá do frete|
@@ -16,5 +16,6 @@ As tecnologias utilizadas no desenvolvimento do AbraCaxi são: a linguagem pytho
 |CupomDesconto|aplicar_desconto|cod_cupom, valor, validade, caso_uso, categoria| |
 |Configuracoes|politica_cancelamento, perfil|tabela_frete, top_produtos, validade_cupons,limite_parcelas.| |
 | | | | |
+
 
 
