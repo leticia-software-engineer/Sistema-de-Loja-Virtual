@@ -5,14 +5,17 @@ As tecnologias utilizadas no desenvolvimento do AbraCaxi são: a linguagem pytho
 
 | Classe        | Métodos                                                   | Atributos                                                    | Relacionamentos               |
 |---------------|-----------------------------------------------------------|--------------------------------------------------------------|-------------------------------|
-| Produto       | ajustar_estoque, crud                                     | nome, categoria, preco_unitario, estoque, cod                |                               |
-| Cliente       | valida_email, valida_cpf, valida_cep, crud                            | nome, email, cpf, cidade, cep, uf                        |                               |
-| Carrinho      | adicionar, remover, alterar_quant                         | produto, quantidade                                          | Produto                       |
-| Pedido        | cancelar, gerar_nota                                      | cliente, itens, frete, desconto, total, status.              | Carrinho, Produto, Cliente, CupomDesconto.   |
-| Pagamento     | validar, registrar.                                       | forma_pagamento, data, status.                               | Pedido                        |
-| Frete         | calcular_por_cep                                         | prazo, cep                                                   | Cliente                       |
-| Expedicao     | gerar_cod, marcar_entregre                                | cod_entrega, entrega                                         | Frete                         |
-| Relatorio     | faturamento_periodo, ranking, vendas_por_estado, ticket_medio, vendas por categoria e pedidos_status  | dia, mes, ano.                                               | Pedido                        |
-| CupomDesconto | aplicar_desconto                                          | cod_cupom, valor, validade, caso_uso, categoria              |                               |
-| Configuracoes | politica_cancelamento, perfil, tabela_frete, top_produtos, validade_cupons, limite_parcelas.                       |  | Frete, Produto, CupomDesconto |
+| **Produto**       | ajustar_estoque, CRUD                                  | nome, categoria, preco_unitario, estoque, cod                | —                             |
+| **Cliente**       | valida_email, valida_cpf, valida_cep, CRUD             | nome, email, cpf, cidade, cep, uf                             | —                             |
+| **Carrinho**      | adicionar, remover, alterar_quant                      | produto, quantidade                                           | Produto                       |
+| **Pedido**        | cancelar, gerar_nota                                   | cliente, itens, frete, desconto, total, status                | Carrinho, Cliente, CupomDesconto, Frete, Expedição |
+| **Pagamento**     | validar, registrar                                     | forma_pagamento, data, status                                 | Pedido                        |
+| **Frete**         | calcular_por_cep                                       | prazo, cep, valor                                             | Cliente, Pedido               |
+| **Expedição**     | gerar_cod, marcar_entregue                             | cod_entrega, data_entrega, status_entrega                     | Pedido, Entregador            |
+| **Relatório**     | faturamento_periodo, ranking, vendas_por_estado, ticket_medio, vendas_por_categoria, pedidos_status | dia, mes, ano                                                 | Pedido                        |
+| **CupomDesconto** | aplicar_desconto                                       | cod_cupom, valor, validade, caso_uso, categoria               | —                             |
+| **Configurações** | politica_cancelamento, perfil, tabela_frete, top_produtos, validade_cupons, limite_parcelas | —                                                            | Frete, Produto, CupomDesconto |
+| **Vendedor**      | valida_email, valida_cnpj, CRUD                        | nome, email, cnpj, loja                                       | Produto                       |
+| **Entregador**    | valida_email, valida_cpf, CRUD                         | nome, email, cpf, distribuidora, cnh                          | Expedição                     |
+
 

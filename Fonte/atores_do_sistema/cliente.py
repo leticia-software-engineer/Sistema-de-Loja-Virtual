@@ -1,4 +1,5 @@
-
+'''A classe Cliente armazena os dados dos clientes, tais como: nome, cpf, endereço. Realiza operações de cadastro, atualização, exclusão e
+também valida os dados de email, cpf e cep.'''
 class Cliente():
     def __init__(self, nome, email, cpf, cidade, cep, uf):
         self.nome = nome
@@ -17,9 +18,12 @@ class Cliente():
         pass
     def deletar(self):
         pass
+
+    #Validação de dados
     def valida_email(self):
         pass
     def valida_cpf(self):
         pass
     def valida_cep(self):
         pass
+
