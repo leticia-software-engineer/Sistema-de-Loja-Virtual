@@ -11,6 +11,7 @@ class ItemCarrinho(Produto):
         self.quant= quantidade
 
     @property
+    #analisa se a quantidade indicada é maior que 0
     def quantidade(self):
         return self.quant
     
@@ -21,18 +22,22 @@ class ItemCarrinho(Produto):
         else:
             raise ValueError("O preço não pode ser zero ou negativo. ")
     def calcular_subtotal(self):
+        #calcula o valor total de determinado item no carrinho considerando a quantidade instanciada
         subtotal = self.preco_unitario * self.quantidade
         return subtotal
     
     def __str__(self):
+        #apresenta as informações do item no carrinho no formato string
         subtotal = self.calcular_subtotal()
         return f"{self.nome} \nQuantidade: {self.quant} \nPreco Unitário: {self.preco_unitario} \nValor total: {subtotal} R$"
-   
+
+#objeto teste
 p = ItemCarrinho("abacaxi", 1, "fruta", 6, 10, 12)
 p2 = ItemCarrinho("uva", 2, "fruta", 2, 20, 10)
 print(p)
 print(p2)
 
+#adiciona mais itens, remove e altera quantidades
 class Carrinho(ItemCarrinho):
     
     def adicionar(self):
