@@ -1,4 +1,4 @@
-'''A classe Cliente armazena os dados dos clientes, tais como: nome, cpf, endereço. 
+'''A classe Cliente armazena os dados dos clientes, tais como: nome, cpf, endereço.  Realiza operações de CRUD e faz a validação das informações do cliente.
  '''
 
 class Cliente():
