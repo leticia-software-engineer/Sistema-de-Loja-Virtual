@@ -1,4 +1,4 @@
-'''A classe pagamento registra as informações do pagamento e valida após ser confirmado.'''
+'''A classe pagamento registra as informações do pagamento como a forma do pagamente e o seu status e valida após ser confirmado.'''
 class Pagamento():
     def __init__(self, forma_pagamento, data, status):
         self.forma_pagamento = forma_pagamento

@@ -1,4 +1,5 @@
-'''A classe Relatorio é responsável por gerar os relatórios de '''
+'''A classe Relatorio é responsável por gerar os relatórios de faturamento por periodo, ranking dos produtos mais vendidos
+quantidade de vendas por Estado, categoria e status de pedidos'''
 class Relatorio():
     def __init__(self, dia, mes, ano, vendas, pagamentos):
         self.dia = dia
@@ -9,8 +10,6 @@ class Relatorio():
     def faturamento_periodo(self):
         pass
     def ranking(self):
-        pass
-    def ticket_medio(self):
         pass
     def vendas_por_estado(self):
         pass
