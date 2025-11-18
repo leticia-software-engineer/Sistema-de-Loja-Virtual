@@ -46,8 +46,5 @@ As tecnologias utilizadas no desenvolvimento do AbraCaxi são: a linguagem pytho
 | **Relatório**     | faturamento_periodo, ranking, vendas_por_estado, ticket_medio, vendas_por_categoria, pedidos_status | dia, mes, ano                                                 | Pedido, Frete, Pagamento.                        |
 | **CupomDesconto** | aplicar_desconto                                       | cod_cupom, valor, validade, caso_uso, categoria               | Pedido                             |
 | **Configuracoes** | politica_cancelamento, perfil, tabela_frete, top_produtos, validade_cupons, limite_parcelas | —                                                            | Frete, Produto, CupomDesconto |
-
-
-
 |**ItemCarrinho** | calcular_subtotal | quantidade |   Produto                                                      |  |
 
