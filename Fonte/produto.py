@@ -12,7 +12,7 @@ class Produto():
         self.preco = preco_unitario
         self.estoque_valido = estoque
         self.arquivo = arquivo
-
+#decorador @property para verificar se o preço e o estoque são positivos
     @property
     def preco(self):
         return f"{self.preco_unitario} R$"
@@ -46,11 +46,14 @@ class Produto():
         pass
 
     def ajustar_estoque(self):
+        #controlar estoque dos produtos
         pass
     def __str__(self):
+        #exibe as informacoes em formato de string
         return f"Produto {self.nome}\nCódigo {self.cod}\nCategoria {self.categoria}\nEstoque {self.estoque}\nPreço {self.preco_unitario}"
     
 
+#uma instancia da classe
 c = Produto("abacaxi", 1, "fruta", 6, 23)
 print(c)
 
