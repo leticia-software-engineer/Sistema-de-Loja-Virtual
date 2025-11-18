@@ -42,7 +42,7 @@ O AbraCaxi é um projeto de POO que simula um e-commerce no qual é possível re
 | **Pagamento**     | validar, registrar                                     | forma_pagamento, data, status                                 | Pedido.                       |
 | **Frete**         | calcular_por_cep                                       | prazo, cep, valor                                             | Cliente, Pedido               |
 | **Expedição**     | gerar_cod, marcar_entregue                             | cod_entrega, data_entrega, status_entrega                     | Pedido            |
-| **Relatório**     | faturamento_periodo, ranking, vendas_por_estado, ticket_medio, vendas_por_categoria, pedidos_status | dia, mes, ano                                                 | Pedido, Frete, Pagamento.                        |
+| **Relatório**     | faturamento_periodo, ranking, vendas_por_estado, vendas_por_categoria, pedidos_status | dia, mes, ano                                                 | Pedido, Frete, Pagamento.                        |
 | **CupomDesconto** | aplicar_desconto                                       | cod_cupom, valor, validade, caso_uso, categoria               | Pedido                             |
 | **Configuracoes** | politica_cancelamento, perfil, tabela_frete, top_produtos, validade_cupons, limite_parcelas | —                                                            | Frete, Produto, CupomDesconto |
 |**ItemCarrinho** | calcular_subtotal | quantidade |   Produto                                                      |  |
