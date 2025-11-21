@@ -8,30 +8,31 @@ from produto import Produto
 class ItemCarrinho(Produto):
     def __init__(self, nome, cod, categoria, preco_unitario, estoque, quantidade):
         super().__init__(nome, cod, categoria, preco_unitario, estoque)
-        self.quant= quantidade
+        self.quantidade= int(quantidade)
 
     @property
     def quantidade(self):
-        return self.quant
+        return f"Quantidade no carrinho {self.__quant}"
     
     @quantidade.setter
     def quantidade(self, quant_positiva):
         if quant_positiva > 0:
-            self.quant = quant_positiva
+            self.__quant = quant_positiva
         else:
-            raise ValueError("O preço não pode ser zero ou negativo. ")
+            print("O preço não pode ser zero ou negativo. ")
+
     def calcular_subtotal(self):
-        subtotal = self.preco_unitario * self.quantidade
-        return subtotal
+        self.subtotal = (self.__quant * self.preco)
+        return f"Total: {self.subtotal}"
     
     def __str__(self):
         subtotal = self.calcular_subtotal()
-        return f"{self.nome} \nQuantidade: {self.quant} \nPreco Unitário: {self.preco_unitario} \nValor total: {subtotal} R$"
+        return f"{self.nome} \nQuantidade: {self.quantidade} \nPreco Unitário: {self.preco} \nValor total: {subtotal} R$"
    
-p = ItemCarrinho("abacaxi", 1, "fruta", 6, 10, 12)
-p2 = ItemCarrinho("uva", 2, "fruta", 2, 20, 10)
-print(p)
-print(p2)
+p = ItemCarrinho("abacaxi", 1111111111111, "fruta", 6, 10, 12)
+p.quantidade = 12
+print(p.quantidade)
+print(p.calcular_subtotal())
 
 class Carrinho(ItemCarrinho):
     
@@ -43,4 +44,5 @@ class Carrinho(ItemCarrinho):
     def alterar_quant(self):
         pass
 
-    pass
+    def fechar_pedido(self):
+        pass
