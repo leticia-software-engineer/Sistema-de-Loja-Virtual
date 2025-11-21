@@ -56,6 +56,7 @@ class Produto():
         pass
 
     def ajustar_estoque(self):
+        #controlar estoque dos produtos
         pass
     '''def __str__(self):
         return f"Produto {self.nome}\nCódigo {self.cod}\nCategoria {self.categoria}\nEstoque {self.estoque}\nPreço {self.preco_unitario}"

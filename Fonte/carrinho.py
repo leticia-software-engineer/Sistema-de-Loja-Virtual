@@ -11,6 +11,7 @@ class ItemCarrinho(Produto):
         self.quantidade= int(quantidade)
 
     @property
+    #analisa se a quantidade indicada é maior que 0
     def quantidade(self):
         return f"Quantidade no carrinho {self.__quant}"
     
@@ -26,6 +27,7 @@ class ItemCarrinho(Produto):
         return f"Total: {self.subtotal}"
     
     def __str__(self):
+        #apresenta as informações do item no carrinho no formato string
         subtotal = self.calcular_subtotal()
         return f"{self.nome} \nQuantidade: {self.quantidade} \nPreco Unitário: {self.preco} \nValor total: {subtotal} R$"
    
@@ -34,6 +36,7 @@ p.quantidade = 12
 print(p.quantidade)
 print(p.calcular_subtotal())
 
+#adiciona mais itens, remove e altera quantidades
 class Carrinho(ItemCarrinho):
     
     def adicionar(self):
