@@ -16,6 +16,8 @@ class Pedido():
         self.frete = frete
         self.desconto = desconto
         self.expedicao = expedicao
+
+        
         
     def cancelar(self):
         pass

@@ -1,0 +1,11 @@
+from fastapi import FastAPI
+
+app = FastAPI()
+
+from rotas.rotas_aut import auth_routes
+from rotas.rotas import routes
+
+app.include_router(auth_routes)
+app.include_router(routes)
+
+#para rodar executar no terminal uvicorn main:app --reload

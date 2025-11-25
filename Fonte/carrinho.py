@@ -13,32 +13,39 @@ class ItemCarrinho(Produto):
     @property
     #analisa se a quantidade indicada é maior que 0
     def quantidade(self):
-        return f"Quantidade no carrinho {self.__quant}"
+        return self.__quant
     
     @quantidade.setter
     def quantidade(self, quant_positiva):
         if quant_positiva > 0:
             self.__quant = quant_positiva
         else:
-            print("O preço não pode ser zero ou negativo. ")
+            print("A quantidade não pode zero ou negativa. ")
 
     def calcular_subtotal(self):
-        self.subtotal = (self.__quant * self.preco)
-        return f"Total: {self.subtotal}"
+        return self.__quant * self.preco
     
     def __str__(self):
         #apresenta as informações do item no carrinho no formato string
         subtotal = self.calcular_subtotal()
-        return f"{self.nome} \nQuantidade: {self.quantidade} \nPreco Unitário: {self.preco} \nValor total: {subtotal} R$"
+        return f"{self.nome} \nQuantidade: {self.quantidade} \nPreco Unitário: {self.preco:.2f} \nValor total: {subtotal:.2f} R$"
    
-p = ItemCarrinho("abacaxi", 1111111111111, "fruta", 6, 10, 12)
-p.quantidade = 12
-print(p.quantidade)
-print(p.calcular_subtotal())
 
 #adiciona mais itens, remove e altera quantidades
-class Carrinho(ItemCarrinho):
+class Carrinho():
+    def __init__(self):
+         self.itens = []
+
+    def __len__(self):
+        return len(self.itens)
     
+    def __add__(self, novo_item):
+        if isinstance(novo_item, ItemCarrinho):
+            self.itens.append(novo_item)
+            return self
+        else:
+            print("Apenas itens do carrinho podem ser adicionados")
+        
     def adicionar(self):
         pass
     def remover(self):

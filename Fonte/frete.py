@@ -22,5 +22,3 @@ class Frete(Cliente):
     def calcular_por_cep(self):
         pass
 
-f = Frete("Letícia", "eule@gmail.com", "12345678910", "maria x", '63260000')
-print(f.valida_cep())

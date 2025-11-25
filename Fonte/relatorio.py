@@ -1,11 +1,11 @@
 '''A classe Relatorio é responsável por gerar os relatórios de faturamento por periodo, ranking dos produtos mais vendidos
 quantidade de vendas por Estado, categoria e status de pedidos'''
-import json
+from datetime import date
 class Relatorio():
-    def __init__(self, data_relatorio, vendas, pagamentos):
-        self.data_relatorio = data_relatorio
+    def __init__(self, vendas, pagamentos):
+        self.data_relatorio = date.today()
         self.vendas = vendas
-        self.__pagamentos = pagamentos
+        self.pagamentos = pagamentos
         
     def faturamento_periodo(self):
         pass
@@ -18,7 +18,3 @@ class Relatorio():
     def pedidos_status(self):
         pass
 
-c = Relatorio("0", "02", "2006", "20", "100")
-
-c.dia = "0"
-print(c.dia)

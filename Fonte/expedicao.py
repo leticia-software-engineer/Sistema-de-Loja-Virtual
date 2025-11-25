@@ -11,13 +11,8 @@ class Expedicao():
         #self.__cod_entrega = cod_entrega
         pass
     def gerar_cod(self):
-        self.__cod_entrega = uuid.uuid4()
-        print(self.__cod_entrega)
-        pass
+        self.cod_entrega = uuid.uuid4()
+        return self.cod_entrega
     def marcar_entregre(self):
         pass
-    def __str__(self):
-        return self.gerar_cod
     
-c = Expedicao()
-print(c.__str__)

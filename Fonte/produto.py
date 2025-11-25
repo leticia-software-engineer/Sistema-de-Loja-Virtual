@@ -5,23 +5,22 @@ import json
     
 class Produto():
     
-    def __init__(self, nome, codigo, categoria, preco_unitario, estoque, arquivo = "data/produtos.json"):
+    def __init__(self, nome, codigo, categoria, preco_unitario, estoque):
         self.nome = nome
-        self.cod = str(codigo)
+        self.__cod = str(codigo)
         self.categoria = categoria
-        self.preco = float(preco_unitario)
-        self.estoque_valido = estoque
-        self.arquivo = arquivo
+        self.__preco = float(preco_unitario)
+        self.__estoque = estoque
 
     @property
     def cod(self):
-        return f"Código GTIN: {self.__cod}"
+        return self.__cod
     @property
     def preco(self):
         return self.__preco
     @property
-    def estoque_valido(self):
-        return f"{self.__estoque} unidades no estoque"
+    def estoque(self):
+        return self.__estoque
     
     @cod.setter
     def cod(self, codigo_valido):
@@ -37,13 +36,21 @@ class Produto():
         else:
             print("O preço não pode ser zero ou negativo. ")
 
-    @estoque_valido.setter
-    def estoque_valido(self, estoque_v):
+    @estoque.setter
+    def estoque(self, estoque_v):
         if estoque_v >= 0:
             self.__estoque = estoque_v
         else:
             print("O valor do estoque não pode ser negativo. ")
 
+    def __str__(self):
+        return f"Produto: {self.nome} custa {self.__preco} R$"
+    
+    def __repr__(self):
+        return f"Produto(nome='{self.nome}', cod='{self.__cod}', preco={self.__preco})"
+    
+
+class GerenciarEstoque():
     #CRUD
     def cadastrar(self):
         pass
@@ -58,15 +65,5 @@ class Produto():
     def ajustar_estoque(self):
         #controlar estoque dos produtos
         pass
-    '''def __str__(self):
-        return f"Produto {self.nome}\nCódigo {self.cod}\nCategoria {self.categoria}\nEstoque {self.estoque}\nPreço {self.preco_unitario}"
-   ''' 
 
-c = Produto("abacaxi", 1, "fruta", 6, 1)
-c.preco = 6
-c.estoque_valido = 100
-c.cod = "1234567891012"
-print(c.preco)
-print(c.estoque_valido)
-print(c.cod)
-
+    

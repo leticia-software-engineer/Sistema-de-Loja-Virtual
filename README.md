@@ -4,32 +4,41 @@ O AbraCaxi é um projeto de POO que simula um e-commerce no qual é possível re
 
 # Estrutura 
 
-/loja virtual <br>
- ├── data/ <br>
- │    ├── ceps.json <br>
- │    ├── clientes.json <br>
- │    ├── pedidos.json <br>
- │    ├── produtos.json <br>
- │    └── relatorios.json<br>
- ├── fonte/ <br>
- │    ├── carrinho.py <br>
- │    ├── cliente.py <br>
- │    ├── configuracoes.py <br>
- │    ├── cupom.py <br>
- │    ├── expedicao.py <br>
- │    ├── frete.py <br>
- │    ├── pagamento.py <br>
- │    └── pedido.py <br>
- │    ├── produto.py <br>
- │    └── relatorio.py <br>
- ├── utilitarios/ <br>
- │    ├── testes/ <br>
- │    └── calculos.py <br>
- ├── requisitos/ <br>
-        └── TEMA 9.pdf <br>
- ├── LICENSE <br>
- ├── main.py <br>
- └── README.md <br>
+loja virtual/
+├── data/<br>
+│   ├── loja virtual.db<br>
+│   └── sqlite.py<br>
+|<br>
+├── Fonte/<br>
+│   ├── _pycache_/<br>
+│   ├── abracaxi.py<br>
+│   ├── carrinho.py<br>
+│   ├── cliente.py<br>
+│   ├── configuracoes.py<br>
+│   ├── cupom.py<br>
+│   ├── expedicao.py<br>
+│   ├── frete.py<br>
+│   ├── pagamento.py<br>
+│   ├── pedido.py<br>
+│   ├── produto.py<br>
+│   └── relatorio.py<br>
+|<br>
+├── Requisitos/<br>
+|<br>
+├── Rotas/<br>
+│   ├── rotas_aut.py<br>
+│   └── rotas.py<br>
+|
+├── Utilitarios/<br>
+│   ├── testes/<br>
+│   │   ├── pytest.ini<br>
+│   │   └── testes.py<br>
+│   ├── calculos.py<br>
+│   └── requirements.txt<br>
+|<br>
+├── LICENSE<br>
+├── main.py<br>
+└── README.md<br>
 
 # UML Textual
 

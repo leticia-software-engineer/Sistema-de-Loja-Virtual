@@ -5,9 +5,9 @@ from produto import Produto
 
 class CupomDesconto():
     def __init__(self, cod_cupom, valor, validade):
-        self.cod_cupom = cod_cupom
-        self.valor = valor
-        self.validade = validade
+        self.__cod_cupom = cod_cupom
+        self.__valor = valor
+        self.__validade = validade
 
     @property
     def cod_cupom(self):
@@ -47,6 +47,3 @@ class CupomDesconto():
     def aplicar_desconto(self):
         pass
 
-c = CupomDesconto("123456", 12, "12/10/2025", "x")
-c.validade = "12/10/2025"
-print(c.validade)
