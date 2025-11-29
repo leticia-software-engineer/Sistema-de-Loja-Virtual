@@ -1,0 +1,1 @@
+from pagar_parcelado import PagarParcelado

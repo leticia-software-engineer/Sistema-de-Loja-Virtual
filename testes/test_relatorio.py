@@ -1,0 +1,1 @@
+from relatorio import Relatorio

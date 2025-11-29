@@ -1,11 +1,11 @@
-'''A classe expedição é responsável por armazenar as informações da entrega do produto após ele ser faturado. Essa classe vai gerar um identificador
-para a entrega e marcar como entregue quando o cliente receber, e o entregador informar.'''
 import uuid
 from datetime import date
 
 # resolver geração de codigo
 
 class Expedicao():
+    '''A classe expedição é responsável por armazenar as informações da entrega do produto após ele ser faturado. Essa classe vai gerar um identificador
+para a entrega e marcar como entregue quando o cliente receber, e o entregador informar.'''
     def __init__(self, entrega = date):
         self.entrega = entrega
         #self.__cod_entrega = cod_entrega

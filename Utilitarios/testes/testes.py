@@ -1,1 +1,0 @@
-from Fonte.produto import Produto

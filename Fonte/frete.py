@@ -5,7 +5,7 @@ class Frete(Cliente):
     def __init__(self, nome, email, cpf, rua, cep):
         super().__init__(nome, email, cpf, rua, cep)
 
-    def valida_cep(self):
+    def validar_cep(self):
     
         if len(self.cep) != 8:
             print("Cep inválido")
@@ -19,6 +19,8 @@ class Frete(Cliente):
             self.cep = f"Cep: {req['cep']}\nCidade: {req['localidade']}\nUF: {req['uf']}"
             return self.cep
            
-    def calcular_por_cep(self):
+    def calcular_valor_frete_por_cep(self):
         pass
 
+    def tempo_entrega_cep(self):
+        pass
