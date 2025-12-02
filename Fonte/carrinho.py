@@ -121,13 +121,3 @@ class Carrinho():
         
 
 
-
-c1 = Carrinho(
-    "Ebook sei lá", "10", 3, "sim"
-)
-print(c1.adicionar_carrinho())
-
-print(c1.visualizar_carrinho())
-
-
-

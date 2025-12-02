@@ -50,6 +50,3 @@ class Pagamento():
             return "O pagamento só é registrado após sua confirmação."
             
 
-p = Pagamento(6, "pix", 10, "pago")
-        
-print(p.registrar_pagamento())

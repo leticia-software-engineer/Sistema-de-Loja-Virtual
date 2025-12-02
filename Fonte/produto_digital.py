@@ -47,7 +47,7 @@ class ProdutoDigital(Produto):
             conexao.close()
             return resultado
         else:
-            conexao.close
+            conexao.close()
             return "Produto não encontrado"
     
     def atualizar(self):
@@ -81,8 +81,3 @@ class ProdutoDigital(Produto):
         else:
             conexao.close()
             return f"Produto não encontrado para excluir."
-
-    
-p1 =ProdutoDigital("Ebook Sei lá", "10", "livro digital", 15, 100)
-print(p1.cadastrar())
-print(p1.ler())

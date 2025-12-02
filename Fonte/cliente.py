@@ -126,11 +126,3 @@ class Cliente():
     def __str__(self):
         return f"Nome {self.nome_cliente}\nRua {self.__rua}"
         
-
-c = Cliente("Joao", "joao@gmail.com", "12345678910", "São José", "63210000")
-c2 = Cliente("Jose", "jose@gmail.com", "12345678911", "São José", "63210000")
-print(c.cadastrar())
-print(c2.cadastrar())
-
-print(c.ler())
-print(c2.ler())

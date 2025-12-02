@@ -98,8 +98,5 @@ o cancelamento de um pedido seguindo as políticas de cancelamento informadas na
     def __str__(self):
         return f"Pedido: {self.cod_pedido} | Cliente: {self.nome} | Total: R${self.calcular_total():.2f} | Status: {self.status}"
     
-
-p = Pedido("sim", "12345678910", 4)
-print(p.fechar_pedido())
+p = Pedido("sim", "12345678910", 1)
 print(p.visualizar_pedidos())
-       
