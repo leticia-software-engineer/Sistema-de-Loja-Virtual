@@ -4,16 +4,16 @@ import sqlite3
 class Cliente():
     '''A classe Cliente armazena os dados dos clientes, tais como: nome, cpf, endereço.  Realiza operações de CRUD e faz a validação das informações do cliente.
  '''
-    def __init__(self, nome, email, cpf, rua, cep):
-        self.nome = nome
+    def __init__(self, nome_cliente, email, cpf, rua, cep):
+        self.nome_cliente = nome_cliente
         self.email = email
         self.cpf = cpf
         self.rua = str(rua)
         self.cep = str(cep)
 
-    '''decoradores property com funçoes getters e setters para validar as informações de nome, email, cpf e rua além de adicionar encapsulamento a esses atributos'''
+    '''decoradores property com funçoes getters e setters para validar as informações de nome_cliente, email, cpf e rua além de adicionar encapsulamento a esses atributos'''
     @property
-    def nome(self):
+    def nome_cliente(self):
         return self.__nome
     @property
     def email(self):
@@ -25,12 +25,12 @@ class Cliente():
     def rua(self):
         return self.__rua
     
-    @nome.setter
-    def nome(self, nome_valido):
+    @nome_cliente.setter
+    def nome_cliente(self, nome_valido):
         if len(nome_valido) > 2:
             self.__nome = nome_valido
         else: 
-            print("Comprimento de nome inválido")
+            print("Comprimento de nome_cliente inválido")
     @email.setter
     def email(self, email_valido):
         regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
@@ -89,7 +89,7 @@ class Cliente():
             return res
         else:
             conexao.close()
-            "Cliente não encontrado. "
+            return "Cliente não encontrado. "
 
     def atualizar(self):
         
@@ -98,9 +98,10 @@ class Cliente():
 
         sql_editar = """UPDATE cliente SET nome = ?, email = ?, rua = ?, cep = ? WHERE cpf = ?"""
         dados_cliente = (self.__nome, self.__email, self.__rua, self.cep, self.__cpf)
-        conexao.commit()
 
         cursor.execute(sql_editar, dados_cliente)
+        conexao.commit()
+
         if cursor.rowcount > 0:
             conexao.close()
             return f"Dados do cliente {self.__nome} alterados com sucesso. "
@@ -123,7 +124,13 @@ class Cliente():
         else:
             return "Conta não encontrada."
     def __str__(self):
-        return f"Nome {self.nome}\nRua {self.__rua}"
+        return f"Nome {self.nome_cliente}\nRua {self.__rua}"
         
-c = Cliente("Leticia", "euleticia@gmail.com", "11012667324", "Maria Alacoque", "63260000")
+
+c = Cliente("Joao", "joao@gmail.com", "12345678910", "São José", "63210000")
+c2 = Cliente("Jose", "jose@gmail.com", "12345678911", "São José", "63210000")
 print(c.cadastrar())
+print(c2.cadastrar())
+
+print(c.ler())
+print(c2.ler())

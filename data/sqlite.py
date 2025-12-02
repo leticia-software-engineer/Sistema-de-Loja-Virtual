@@ -18,7 +18,8 @@ cursor.execute("""
                 cod TEXT PRIMARY KEY NOT NULL, 
                 categoria TEXT NOT NULL,
                 preco REAL NOT NULL, 
-                estoque INTEGER NOT NULL)
+                estoque INTEGER NOT NULL,
+                frete TEXT)
 """)
 
 cursor.execute("""
@@ -27,18 +28,19 @@ cursor.execute("""
                 nome TEXT NOT NULL, 
                 cod TEXT NOT NULL, 
                 preco REAL NOT NULL, 
-                quantidade INTEGER NOT NULL)
+                quantidade INTEGER NOT NULL,
+                frete TEXT)
 """)
 
 cursor.execute("""
     CREATE TABLE IF NOT EXISTS pedido (
                 num_pedido INTEGER PRIMARY KEY AUTOINCREMENT,
-                cod_carrinho INTEGER FOREIGNH KEY NOT NULL,
-                valor_pedido REAL NOT NULL,
-                cpf INTEGER FOREIGNH KEY NOT NULL, 
-                forma_pagamento TEXT FOREIGNH KEY NOT NULL,
-                frete TEXT NOT NULL, 
-                desconto TEXT)
+                data DATETIME NOT NULL,
+                cliente_cpf TEXT NOT NULL,
+                total REAL NOT NULL,
+                status TEXT NOT NULL,
+                cod_carrinho INTEGER NOT NULL,
+                produtos TEXT NOT NULL)
 """)
 
 cursor.execute("""
@@ -46,17 +48,18 @@ cursor.execute("""
                 id_pagamento INTEGER PRIMARY KEY AUTOINCREMENT,
                 id_pedido TEXT FOREIGNH KEY NOT NULL,
                 forma_pagamento TEXT NOT NULL, 
-                status TEXT NOT NULL,
+                valor_pago REAL NOT NULL,
                 data_pagamento DATE NOT NULL)
+        
 """)
 
 cursor.execute("""
-    CREATE TABLE IF NOT EXISTS relatorio (
-                id_relatorio INTEGER PRIMARY KEY AUTOINCREMENT,
-                data DATE NOT NULL,
+    CREATE TABLE IF NOT EXISTS relatorio_faturamento (
+                id_relatorio_faturamento INTEGER PRIMARY KEY AUTOINCREMENT,
+                data_relatorio DATE NOT NULL,
+                mes_referencia DATE NOT NULL,
                 quantidade_vendas INTEGER NOT NULL, 
-                status TEXT NOT NULL,
-                id_frete TEXT FOREIGNH KEY NOT NULL)
+                valor_arrecadado TEXT NOT NULL)
 """)
 
 

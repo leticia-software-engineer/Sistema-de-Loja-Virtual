@@ -1,1 +1,0 @@
-from Fonte.pagar_a_vista import Pagar_Vista

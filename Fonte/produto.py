@@ -10,6 +10,7 @@ class Produto():
         self.categoria = categoria
         self.preco = float(preco_unitario)
         self.estoque = estoque
+        self.frete = "Com frete."
 
     @property
     def cod(self):
@@ -48,91 +49,3 @@ class Produto():
     def __repr__(self):
         return f"Produto(nome='{self.nome}', cod='{self.__cod}', preco={self.__preco}, estoque={self.__estoque})"
     
-    #CRUD
-    def cadastrar(self):
-        conexao = sqlite3.connect("loja virtual.db")
-        cursor = conexao.cursor()
-
-        sql_checar = "SELECT cod FROM produto WHERE cod = ?"
-        cursor.execute(sql_checar, (self.__cod,))
-        pesq = cursor.fetchone()
-
-        if pesq == None:
-            sql_inserir = """
-            INSERT INTO produto(nome, cod, categoria, preco, estoque)
-            VALUES(? ,? ,? ,? ,? )
-            """
-            dados_produto = (self.nome, self.__cod, self.categoria, self.__preco, self.__estoque)
-
-            cursor.execute(sql_inserir, dados_produto)
-            conexao.commit()
-            conexao.close()
-
-            return f"Produto {self.nome} cadastrado com sucesso."
-        else: 
-            conexao.close()
-            return "Já existe um produto cadastrado com esse codigo"
-
-    def ler(self):
-        conexao = sqlite3.connect("loja virtual.db")
-        cursor = conexao.cursor()
-
-        sql_buscar = """SELECT nome, cod, categoria, preco, estoque FROM produto WHERE COD = ?"""
-
-        cursor.execute(sql_buscar, (self.cod,))
-        resultado = cursor.fetchone() 
-        
-        if resultado: 
-            conexao.close()
-            return resultado
-        else:
-            conexao.close
-            return "Produto não encontrado"
-    
-    def atualizar(self):
-        conexao = sqlite3.connect("loja virtual.db")
-        cursor = conexao.cursor()
-
-        sql_editar = """UPDATE produto SET nome = ? , categoria = ?, preco = ?, estoque = ? WHERE cod = ?"""
-
-        dados_produto = (self.nome, self.categoria, self.__preco, self.__estoque, self.__cod)
-        cursor.execute(sql_editar, dados_produto)
-        conexao.commit()
-        
-        if cursor.rowcount > 0:
-            conexao.close()
-            return f"Produto {self.nome} atualizado com sucesso."
-        else:
-            return "Produto não encontrado"
-        
-    
-    def deletar(self):
-        conexao = sqlite3.connect("loja virtual.db")
-        cursor = conexao.cursor()
-
-        sql_deletar = """DELETE FROM produto WHERE cod = ?"""
-        dados_produto = (self.nome, self.categoria, self.__preco, self.__estoque, self.__cod)
-
-        cursor.execute(sql_deletar, (self.__cod,))
-        
-        conexao.commit()
-        if cursor.rowcount:
-            conexao.close()
-            return f"Produto {self.nome} excluido com sucesso."
-        else:
-            conexao.close()
-            return f"Produto não encontrado para excluir."
-
-    def ajustar_estoque_entrada(self):
-        #controlar estoque dos produtos
-        #se um produto for atualizado e for acrescentado estoque, seu estoque seve ser atualizado.
-        #se uma venda for cancelada o estoque deve ser estornado
-        
-        pass
-    def ajustar_estoque_saida(self):
-        #controlar estoque dos produtos
-        #após confirmação de pedido o estoque do produto deve ser subtraído
-        pass
-
-p = Produto("teste", "4", "teste", 12, 100)
-p.cadastrar()

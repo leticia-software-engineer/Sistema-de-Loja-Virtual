@@ -6,10 +6,20 @@ class Carrinho():
     na mesma compra. Além disso, com a classe Carrinho é possível remover itens do carrinho ou alterar a quantidade sempre que um produto que já esteja no carrinho for
     novamente adicionado.
     '''
-    def __init__(self, nome, codigo, quantidade):
+    def __init__(self, nome, codigo, quantidade, com_frete):
         self.nome = nome
         self.cod = codigo
         self.quantidade = quantidade
+        self.frete = com_frete
+
+    def __len__(self):
+        conexao = sqlite3.connect("loja virtual.db")
+        cursor = conexao.cursor()
+        sql_contar = "SELECT COUNT(cod) FROM carrinho"
+        cursor.execute(sql_contar)
+        count = cursor.fetchone()[0]
+        conexao.close()
+        return count
     
     def adicionar_carrinho(self):
         #metodo para adicionar produtos ao carrinho.
@@ -42,8 +52,8 @@ class Carrinho():
                     estoque = resultado[4]
                     if estoque >= self.quantidade:
                         #se a quantidade escolhida for maior que o estoque disponível para o produto, permitir adicao ao carrinho
-                        adicionar_no_carrinho = """INSERT INTO carrinho(nome, cod, preco, quantidade) VALUES(?, ?, ?, ?)"""
-                        dados = (nome_produto, self.cod, preco_produto, self.quantidade)
+                        adicionar_no_carrinho = """INSERT INTO carrinho(nome, cod, preco, quantidade, frete) VALUES(?, ?, ?, ?, ?)"""
+                        dados = (nome_produto, self.cod, preco_produto, self.quantidade, self.frete)
 
                         cursor.execute(adicionar_no_carrinho, dados)
                         conexao.commit()
@@ -75,7 +85,7 @@ class Carrinho():
         conexao = sqlite3.connect("loja virtual.db")
         cursor = conexao.cursor()
 
-        visualizar = """SELECT nome, cod, preco, quantidade FROM carrinho"""
+        visualizar = """SELECT cod_carrinho, nome, cod, preco, quantidade FROM carrinho"""
         cursor.execute(visualizar)
         itens = cursor.fetchall()
         conexao.close()
@@ -109,3 +119,15 @@ class Carrinho():
         else:
             return "É necessário informar o código para fazer a exclusão."
         
+
+
+
+c1 = Carrinho(
+    "Ebook sei lá", "10", 3, "sim"
+)
+print(c1.adicionar_carrinho())
+
+print(c1.visualizar_carrinho())
+
+
+
