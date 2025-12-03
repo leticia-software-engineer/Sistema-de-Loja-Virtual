@@ -43,9 +43,9 @@ class ProdutoFisico(Produto):
         conexao = sqlite3.connect("loja virtual.db")
         cursor = conexao.cursor()
 
-        sql_buscar = """SELECT nome, cod, categoria, preco, estoque, frete FROM produto WHERE COD = ?"""
+        sql_buscar = """SELECT nome, cod, categoria, preco, estoque, frete FROM produto WHERE COD = ? and NOME = ?"""
 
-        cursor.execute(sql_buscar, (self.cod,))
+        cursor.execute(sql_buscar, (self.cod, self.nome))
         resultado = cursor.fetchone() 
         
         if resultado: 

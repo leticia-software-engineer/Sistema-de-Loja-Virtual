@@ -1,0 +1,82 @@
+[
+    {
+        "cep": "63210000",
+        "cotacao": 32.00,
+        "prazo_entrega": 18
+    },
+    {
+        "cep": "63260000",
+        "cotacao": 30.00,
+        "prazo_entrega": 7
+    },
+    {
+        "cep": "63240000",
+        "cotacao": 37.00,
+        "prazo_entrega": 12
+    },
+    {
+        "cep": "63136000",
+        "cotacao": 30.00,
+        "prazo_entrega": 25
+    },
+    {
+        "cep": "63137000",
+        "cotacao": 32.00,
+        "prazo_entrega": 5
+    },
+    {
+        "cep": "63180000",
+        "cotacao": 10.00,
+        "prazo_entrega": 29
+    },
+    {
+        "cep": "63138000",
+        "cotacao": 30.00,
+        "prazo_entrega": 14
+    },
+    {
+        "cep": "63139000",
+        "cotacao": 30.00,
+        "prazo_entrega": 22
+    },
+    {
+        "cep": "63510000",
+        "cotacao": 20.00,
+        "prazo_entrega": 9
+    },
+    {
+        "cep": "63511000",
+        "cotacao": 40.00,
+        "prazo_entrega": 3
+    },
+    {
+        "cep": "63512000",
+        "cotacao": 20.00,
+        "prazo_entrega": 30
+    },
+    {
+        "cep": "63010900",
+        "cotacao": 10.00,
+        "prazo_entrega": 13
+    },
+    {
+        "cep": "63010905",
+        "cotacao": 20.00,
+        "prazo_entrega": 8
+    },
+    {
+        "cep": "63250000",
+        "cotacao": 40.00,
+        "prazo_entrega": 19
+    },
+    {
+        "cep": "63255000",
+        "cotacao": 20.00,
+        "prazo_entrega": 4
+    },
+    {
+        "cep": "63165000",
+        "cotacao": 10.00,
+        "prazo_entrega": 27
+    }
+]

@@ -52,8 +52,6 @@ class Relatorio():
             f.write(json_string)
         return f"Relatório de faturamento gerado com sucesso no arquivo: {nome_arquivo}"
         
-       
-            
 
     def ranking(self):
         #mostrar produtos mais vendidos

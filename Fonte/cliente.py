@@ -1,5 +1,4 @@
 import re
-import requests
 import sqlite3
 class Cliente():
     '''A classe Cliente armazena os dados dos clientes, tais como: nome, cpf, endereço.  Realiza operações de CRUD e faz a validação das informações do cliente.
@@ -12,6 +11,7 @@ class Cliente():
         self.cep = str(cep)
 
     '''decoradores property com funçoes getters e setters para validar as informações de nome_cliente, email, cpf e rua além de adicionar encapsulamento a esses atributos'''
+    #getters
     @property
     def nome_cliente(self):
         return self.__nome
@@ -24,7 +24,11 @@ class Cliente():
     @property
     def rua(self):
         return self.__rua
+    @property
+    def cep(self):
+        return self._cep
     
+    #setters
     @nome_cliente.setter
     def nome_cliente(self, nome_valido):
         if len(nome_valido) > 2:
@@ -45,49 +49,72 @@ class Cliente():
         if len(cpf_validacao) == 11:
             self.__cpf = cpf_validacao
         else:
-            print("O cpf deve conter 11 dígitos.")
+            raise ValueError("CPF deve conter 11 dígitos")
+        
     @rua.setter
     def rua(self, rua_valida):
         if len(rua_valida) > 0 :
             self.__rua = rua_valida
         else:
             print("O nome da rua não foi informado")
-    
-    #CRUD Realiza operações de cadastro, atualização, exclusão.
-    
-    def cadastrar(self):
-        conexao = sqlite3.connect("loja virtual.db")
-        cursor = conexao.cursor()
-        sql_ler = """SELECT nome, email, rua, cep FROM cliente WHERE CPF = ?"""
 
-        sql_inserir = """INSERT INTO cliente (nome, email, cpf, rua, cep)
-         VALUES (?, ?, ?, ?, ?) """
-        dados_cliente = (self.__nome, self.__email, self.__cpf, self.__rua, self.cep)
-
-        cursor.execute(sql_ler, (self.__cpf,))
-        res = cursor.fetchone()
-   
-        if res:
-            return "Cliente já cadastrado."
+    @cep.setter
+    def cep(self, cep_valido):
+        if len(cep_valido) == 8:
+            self._cep = cep_valido
         else:
-            cursor.execute(sql_inserir, dados_cliente)
-            conexao.commit()
-            conexao.close()
-            return f"Cliente {self.__nome} cadastrado com sucesso. "
+            print("O cep deve conter 8 dígitos.")
+    
+    def __str__(self):
+        #método especial para conversão em string
+        return f"Nome {self.nome_cliente}\nRua {self.__rua}"
+        
+#CRUD do cliente
+
+    def cadastrar(self):
+            #Conectando com o banco
+            conexao = sqlite3.connect("loja virtual.db")
+            cursor = conexao.cursor()
+
+            #comando sql para procurar se já existe cadastro com o cpf informado
+            sql_ler = """SELECT nome, email, rua, cep FROM cliente WHERE CPF = ?"""
+            cursor.execute(sql_ler, (self.__cpf,))
+            cpf_já_cadastrado = cursor.fetchone()
+    
+            #comando para inserir os dados no banco
+            sql_inserir = """INSERT INTO cliente (nome, email, cpf, rua, cep)
+            VALUES (?, ?, ?, ?, ?) """
+            #dados a serem inseridos
+            dados_cliente = (self.__nome, self.__email, self.__cpf, self.__rua, self.cep)
+            
+            if cpf_já_cadastrado:
+                #se forem encontrados dados com o cpf informado
+                conexao.close()
+                return "Cliente já cadastrado."
+            else:
+                #se não forem encontrados dados com o cpf, inserir as informaçoes instanciadas
+                cursor.execute(sql_inserir, dados_cliente)
+                conexao.commit()
+                conexao.close()
+                #exibir que a operação foi bem sucedida
+                return f"Cliente {self.__nome} cadastrado com sucesso. "
 
     def ler(self):
         
+        #conecta com o banco
         conexao = sqlite3.connect("loja virtual.db")
         cursor = conexao.cursor()
-
+        #buscar as informacoes da instancia no banco
         sql_ler = """SELECT nome, email, rua, cep FROM cliente WHERE CPF = ? """
 
         cursor.execute(sql_ler, (self.__cpf,))
         res = cursor.fetchone()
         if res:
+            #se a informacao for encontrada, exibe elas
             conexao.close()
             return res
         else:
+            #se não encontradas, exibe mensagem
             conexao.close()
             return "Cliente não encontrado. "
 
@@ -96,16 +123,18 @@ class Cliente():
         conexao = sqlite3.connect("loja virtual.db")
         cursor = conexao.cursor()
 
+        #atualiza os dados do banco para os da instancia, menos o cpf
         sql_editar = """UPDATE cliente SET nome = ?, email = ?, rua = ?, cep = ? WHERE cpf = ?"""
         dados_cliente = (self.__nome, self.__email, self.__rua, self.cep, self.__cpf)
-
         cursor.execute(sql_editar, dados_cliente)
         conexao.commit()
 
         if cursor.rowcount > 0:
+            #se alguma alteração foi feita a atualização teve sucesso
             conexao.close()
             return f"Dados do cliente {self.__nome} alterados com sucesso. "
         else:
+            #se nenhuma alteração foi feita o cliente não foi encontrado
             return f"Cliente não encontrado."
         
     def deletar(self):
@@ -113,16 +142,16 @@ class Cliente():
         conexao = sqlite3.connect("loja virtual.db")
         cursor = conexao.cursor()
 
+        #excluir dados do cliente com o cpf informado
         sql_deletar = """DELETE FROM cliente WHERE cpf = ?"""
-
-        cursor.execute(sql_deletar, self.__cpf)
+        cursor.execute(sql_deletar, (self.__cpf,))
         conexao.commit()
 
         if cursor.rowcount > 0:
+            #se informacoes foram alteradas no banco, exibe mensagem de sucesso.
             conexao.close()
             return f"Conta do cliente {self.__nome} excluída com sucesso"
         else:
+            #se não foi excluída, é porque não foi encontrada
             return "Conta não encontrada."
-    def __str__(self):
-        return f"Nome {self.nome_cliente}\nRua {self.__rua}"
-        
+

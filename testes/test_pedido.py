@@ -1,1 +1,0 @@
-from pedido import Pedido

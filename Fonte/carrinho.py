@@ -6,22 +6,14 @@ class Carrinho():
     na mesma compra. Além disso, com a classe Carrinho é possível remover itens do carrinho ou alterar a quantidade sempre que um produto que já esteja no carrinho for
     novamente adicionado.
     '''
-    def __init__(self, nome, codigo, quantidade, com_frete):
+
+    def adicionar_carrinho(self, nome, codigo, quantidade, com_frete):
+        "Esse metódo é responsável por pegar produtos cadastrados e adicioná-los ao carrinho conforme escolha do cliente"
         self.nome = nome
         self.cod = codigo
         self.quantidade = quantidade
         self.frete = com_frete
 
-    def __len__(self):
-        conexao = sqlite3.connect("loja virtual.db")
-        cursor = conexao.cursor()
-        sql_contar = "SELECT COUNT(cod) FROM carrinho"
-        cursor.execute(sql_contar)
-        count = cursor.fetchone()[0]
-        conexao.close()
-        return count
-    
-    def adicionar_carrinho(self):
         #metodo para adicionar produtos ao carrinho.
         conexao = sqlite3.connect("loja virtual.db")
         cursor = conexao.cursor()
@@ -61,9 +53,10 @@ class Carrinho():
                         return f"Produto adicionado ao carrinho."
                 
                     else:
+                        #se a quantidade escolhida não estiver disponível no estoque
                         return "Estoque insuficiente."
                 else:
-                    #se o produto já estiver no carrinho
+                    #se o produto já estiver no carrinho, adiciona na quantidade
                     quantidade_atual = res[3]
                     estoque_atual = resultado[4]
                     nova_quantidade = quantidade_atual + self.quantidade
@@ -78,28 +71,36 @@ class Carrinho():
                     else:
                         return "Estoque insuficiente."
         else:
+            #se o código do produto não for informado
             return "O código do produto não foi informado."
     
     def visualizar_carrinho(self):
         #exibe a lista com os itens que estão dentro do carrinho
+
         conexao = sqlite3.connect("loja virtual.db")
         cursor = conexao.cursor()
-
+        #busca os itens que estão no carrinho
         visualizar = """SELECT cod_carrinho, nome, cod, preco, quantidade FROM carrinho"""
         cursor.execute(visualizar)
         itens = cursor.fetchall()
         conexao.close()
 
         if not itens:
+            #se não forem encontrados itens
             return "Carrinho está vazio."
         else:
+            #se encontrados, mostrar
             return itens
         
-    def excluir_item_carrinho(self):
+    def excluir_item_carrinho(self, cod):
+        self.cod = cod
         #a pessoa poderá selecionar o codigo do produto que deseja remover do carrinho.
         if self.cod:
+            #se o codigo que a pessoa escolheu representar um carrinho
             conexao = sqlite3.connect("loja virtual.db")
             cursor = conexao.cursor()
+
+            #buscar as informaçoes com o codigo no carrinho
             procurar_item_carrinho = """SELECT nome, cod, preco, quantidade FROM carrinho WHERE cod = ?"""
             cursor.execute(procurar_item_carrinho, (self.cod,))
             produto_encontrado = cursor.fetchone()
@@ -117,7 +118,16 @@ class Carrinho():
                 return "Produto não encontrado no carrinho"
         
         else:
+            #se o codigo não foi informado pelo usuário
             return "É necessário informar o código para fazer a exclusão."
         
-
-
+    def __len__(self):
+        #verificar quantos produtos tem em carrinhos registrados
+        conexao = sqlite3.connect("loja virtual.db")
+        cursor = conexao.cursor()
+        sql_contar = "SELECT COUNT(cod) FROM carrinho"
+        cursor.execute(sql_contar)
+        count = cursor.fetchone()[0]
+        conexao.close()
+        return count
+    

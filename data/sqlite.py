@@ -40,7 +40,9 @@ cursor.execute("""
                 total REAL NOT NULL,
                 status TEXT NOT NULL,
                 cod_carrinho INTEGER NOT NULL,
-                produtos TEXT NOT NULL)
+                produtos TEXT NOT NULL,
+                frete TEXT,
+                cod_entrega TEXT)
 """)
 
 cursor.execute("""
