@@ -60,57 +60,79 @@ class Relatorio():
         return f"Relatório de faturamento gerado com sucesso no arquivo: {nome_arquivo}"
         
 
-    def ranking(self):
-        #mostrar produtos mais vendidos
-        #conexao com banco 
+    def pedidos_por_cep(self):
+        #mostrar quantidade de vendas feitas para cada cep
         conexao = sqlite3.connect("loja virtual.db")
         cursor = conexao.cursor()
 
         #procurar as informacoes de valores e datas dos pagamentos feitos
-        sql_visualizar_pedidos = """SELECT produtos FROM pedido"""
+        sql_visualizar_pedidos = """SELECT confirme_cep FROM pedido"""
         cursor.execute(sql_visualizar_pedidos)
-        produtos_codigo_quantidade = cursor.fetchall()
+        cep_pedidos = cursor.fetchall()
 
-        #se forem encontrados produtos vendidos
-        if produtos_codigo_quantidade:
-            codigos = [item[0] for item in produtos_codigo_quantidade]
-            contar_codigos = Counter(codigos)
-
-            ranking = contar_codigos.most_common()
-            ranking_salvar = []
-            for codigo, quantidade in ranking:
-
-                sql_visualizar_produtos = """SELECT nome FROM produto WHERE cod = ?"""
-                cursor.execute(sql_visualizar_produtos, (codigo,))
-                nome_do_produto = cursor.fetchall()
-                nome_formatado = str(nome_do_produto)
-
-                ranking_salvar.append({
-                    "codigo": codigo,
-                    "nome": nome_formatado,
-                    "quantidade_vendida": quantidade
-                })
-
-            json_string = json.dumps(ranking_salvar, indent=4) 
-            nome_arquivo = "ranking.json"
-            with open(nome_arquivo, 'w', encoding='utf-8') as f:
-                f.write(json_string)
-            return f"Ranking de produtos vendidos salvo em: {nome_arquivo}"
-                
-
+        if not cep_pedidos:
+            return "Não foi encontrado nenhum pedido"
         else:
-            return "Nenhum pedido encontrado."
+            lista_de_ceps = []
+            #pegar cada cep, e colocar numa lista
+            for cep in cep_pedidos:
+                lista_de_ceps.append(cep)
 
-    def vendas_por_cep(self):
-        #mostrar quantidade de vendas feitas para cada estado
-        pass
-    def vendas_por_categoria(self):
-        #mostrar a quantidade de vendas feitas em cada categoria de produto
-        pass
-    def pedidos_status(self):
-        #mostrar o status dos pedidos - pago, aguardando pagamento.
-        #quantidade de pedidos com status pago e aguardando pagamento
-        pass
+            #pegar a lista e fazer a contagem de cada item
+            contar = Counter(lista_de_ceps)
+            dicionario = dict(contar)
+            dicionario_para_guardar = {cep_em_tupla[0]: quant for cep_em_tupla, quant in dicionario.items()}
+            arquivo_relatorio_por_cep = "relatorio por cep.json"
+            with open(arquivo_relatorio_por_cep, "w", encoding="utf-8") as arquivo:
+                    
+            #salvar no arquivo json o cep e a quantidade de vendas para ele
+                json.dump(dicionario_para_guardar, arquivo, ensure_ascii=False, indent=4)
+                return f"Relatorio de pedidos por cep gerado em {arquivo_relatorio_por_cep}"
+                #return f"Relatório de cep gerado no arquivo {arquivo_relatorio_por_cep}"
+        
+    def pedidos_por_status(self):
+        #mostrar quantidade de pedidos com cada status
+        conexao = sqlite3.connect("loja virtual.db")
+        cursor = conexao.cursor()
 
+        #procurar as informacoes de status dos pedidos feitos
+        sql_visualizar_pedidos = """SELECT status FROM pedido"""
+        cursor.execute(sql_visualizar_pedidos)
+        status_pedidos = cursor.fetchall()
+
+        if not status_pedidos:
+            return "Não foi encontrado nenhum pedido"
+        else:
+            lista_status_encontrados = []
+            for status in status_pedidos:
+                lista_status_encontrados.append(status)
+            contar = Counter(lista_status_encontrados)
+            dicionario = dict(contar)
+
+            dicionario_para_guardar = {status_em_tupla[0]: quant for status_em_tupla, quant in dicionario.items()}
+            quantidade_total = 0
+            porcentagens = []
+            lista_status_porcentagem = []
+
+            for quantidade in dicionario_para_guardar.values():
+                pedidos_por_status = quantidade
+                quantidade_total += quantidade
+            for status in dicionario_para_guardar.values():
+                porcentagem = (status/quantidade_total)*100
+                porcentagens.append(f'{porcentagem} %')
+            
+        #distribuir para cada chave key do dicionario a respectiva porcentagem na lista
+           
+            for chave, quantidade in dicionario_para_guardar.items():
+                porcentagem = (quantidade / quantidade_total) * 100
+                
+                # Adiciona a chave e a porcentagem correspondente
+                lista_status_porcentagem.append(chave)
+                lista_status_porcentagem.append(f'{porcentagem} %')
+
+        relatorio_pedidos_status = "relatorio de pedidos por status.json"                    
+        with open(relatorio_pedidos_status, "w", encoding="utf-8") as arquivo:
+            json.dump(dicionario_para_guardar, arquivo, ensure_ascii=False, indent=4)
+        return f"Essa foi a porcentagem encontrada para cada status {lista_status_porcentagem} \nPara mais detalhes leia as quantidades de pedidos para cada status no arquivo {relatorio_pedidos_status}"            
 r = Relatorio()
-print(r.ranking())
+print(r.pedidos_por_status())

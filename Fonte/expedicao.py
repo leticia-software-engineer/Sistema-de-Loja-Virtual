@@ -22,20 +22,22 @@ para a entrega e marcar como entregue quando o cliente receber, e o entregador i
         dados = cursor.fetchone()
 
         status, data = dados
-        data_pedido = datetime.fromisoformat(data)
-        data_atual = datetime.now()
+        status_formatado = str(status)
 
         if dados:
-            if status == "pago" or status == "pago parcialmente" and data_atual - data_pedido == 1:
-                status = "Enviado"
+            if status_formatado == "pago" or status_formatado == "pago parcialmente":
+                novo_status = "Enviado"
 
                 atualizar_status = "UPDATE pedido SET status = ? WHERE cod_entrega = ?"
-                dados = (status, self.entrega)
+                dados = (novo_status, self.entrega)
                 cursor.execute(atualizar_status, dados)
-                if cursor.rowcount != 0:
+                conexao.commit()
+                if cursor.rowcount == 1:
                     return "Produto enviado."
                 else:
                     return "Erro ao atualizar o banco de dados"
+            elif status_formatado == "Enviado":
+                return "Esse produto já foi enviado"
             else:
                 return "Esse pedido ainda não foi enviado. Verifique nossa politica de envio."
         else:
@@ -55,16 +57,17 @@ para a entrega e marcar como entregue quando o cliente receber, e o entregador i
         status, data, confirme_cep = dados
         data_envio = datetime.fromisoformat(data)
         data_atual = datetime.now()
-        cep_em_str = confirme_cep
+        confirme_cep = dados[2]
 
         if dados:
             if status == "Enviado":
-                if cep_em_str:
+                if confirme_cep:
                     with open("data/ceps_cotacoes_ceara.json", "r", encoding="utf-8") as arquivo:
                         carregar = json.load(arquivo)
                         for item in carregar:
                             if item["cep"] == confirme_cep:
-                                entrega = item["prazo_entrega"]
+                                entrega = item.get("prazo_entrega")
+
                                 if entrega:
                                     data_entrega = data_envio + timedelta(days = entrega)
                                     if date.today() == data_entrega:
@@ -94,5 +97,5 @@ para a entrega e marcar como entregue quando o cliente receber, e o entregador i
         #a data da entrega deve ser extamente a quantidade de dias estimado depois do pedido enviado
 
     
-e = Expedicao("ab1571df-d175-11f0-b304-b857b09ff55d")
+e = Expedicao("ca329410-d20d-11f0-b373-b857b09ff55d")
 print(e.marcar_envio())

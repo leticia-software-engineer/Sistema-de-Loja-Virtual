@@ -57,15 +57,6 @@ cursor.execute("""
         
 """)
 
-cursor.execute("""
-    CREATE TABLE IF NOT EXISTS relatorio_faturamento (
-                id_relatorio_faturamento INTEGER PRIMARY KEY AUTOINCREMENT,
-                data_relatorio DATE NOT NULL,
-                mes_referencia DATE NOT NULL,
-                quantidade_vendas INTEGER NOT NULL, 
-                valor_arrecadado TEXT NOT NULL)
-""")
-
 
 conexao.commit()
 conexao.close()

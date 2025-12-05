@@ -98,5 +98,5 @@ class Pagamento():
             return "O pagamento só é registrado após sua confirmação."
             
 
-p = Pagamento(4, "pix", 62, "pago")
+p = Pagamento(1, "pix", 62, "pago")
 print(p.registrar_pagamento())

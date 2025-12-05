@@ -183,9 +183,12 @@ o cancelamento de um pedido seguindo as políticas de cancelamento informadas na
             return "Pedido não encontrado."
         
 
-p = Pedido("sim", "11012667324", 63260000, 4)
-
+p = Pedido("sim", "11012667324", 63260000, 1)
+print(p.calcular_subtotal())
+print(p.fechar_pedido())
 print(p.visualizar_meus_pedidos())
+print(p.informacoes_da_entrega(1))
+
                 
         
         
