@@ -14,7 +14,7 @@ o cancelamento de um pedido seguindo as políticas de cancelamento informadas na
         self.confirmar = str(confirmar)
         self.confirme_cpf = confirme_cpf
         self.total = 0
-        self.cod_carrinho_pedido = id_do_carrinho
+        self.num_pedido = id_do_carrinho
         self.confirmar_cep = confirma_cep
         self.cod_entrega = None
         self.total_pedido = 0
@@ -56,7 +56,6 @@ o cancelamento de um pedido seguindo as políticas de cancelamento informadas na
             return self.total
         else:
 
-            ########Corrrigirrrrr########
             #verifica o cep do cliente 
             procurar_cep_do_cliente =  """SELECT cep FROM cliente WHERE cpf = ?"""
             cursor.execute(procurar_cep_do_cliente, (self.confirme_cpf,))
@@ -106,7 +105,7 @@ o cancelamento de um pedido seguindo as políticas de cancelamento informadas na
 
             if cliente_encontrado:
                 sql_conferir_carrinho = """SELECT cod, quantidade FROM carrinho WHERE cod_carrinho= ?"""
-                cursor.execute(sql_conferir_carrinho, (self.cod_carrinho_pedido,))
+                cursor.execute(sql_conferir_carrinho, (self.num_pedido,))
                 carrinho = cursor.fetchall()
                 
                 if carrinho:
@@ -125,12 +124,12 @@ o cancelamento de um pedido seguindo as políticas de cancelamento informadas na
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
                     """
                     data_formatada = self.data.isoformat()
-                    valores = (data_formatada, self.confirme_cpf, self.total, status, self.cod_carrinho_pedido, produtos_para_db, self.frete, self.cod_entrega, self.confirmar_cep)
+                    valores = (data_formatada, self.confirme_cpf, self.total, status, self.num_pedido, produtos_para_db, self.frete, self.cod_entrega, self.confirmar_cep)
                     
                     cursor.execute(sql_insert_pedido, valores)
                     conexao.commit()
                     sql_esvaziar_carrinho = """DELETE FROM carrinho WHERE cod_carrinho = ?"""
-                    cursor.execute(sql_esvaziar_carrinho, (self.cod_carrinho_pedido,))
+                    cursor.execute(sql_esvaziar_carrinho, (self.num_pedido,))
                     conexao.commit()
                     conexao.close()
                     
@@ -148,7 +147,7 @@ o cancelamento de um pedido seguindo as políticas de cancelamento informadas na
         cursor.execute(visualizar, (self.confirme_cpf,))
         r_busca = cursor.fetchall()
         if r_busca:
-            self.cod_carrinho_pedido = r_busca[0][0]
+            self.num_pedido = r_busca[0][0]
             conexao.close()
             
             return r_busca
@@ -161,15 +160,16 @@ o cancelamento de um pedido seguindo as políticas de cancelamento informadas na
         conexao = sqlite3.connect("loja virtual.db")
         cursor = conexao.cursor()
 
-        visualizar = """SELECT cod_carrinho_pedido, frete, cod_entrega from pedido where cod_carrinho_pedido = ?"""
+        visualizar = """SELECT num_pedido, frete, cod_entrega from pedido where num_pedido = ?"""
         cursor.execute(visualizar, (id_pedido,))
         pedido = cursor.fetchone()
 
         if pedido:
             idpedido, frete, cod_entrega = pedido
-            if id_pedido == idpedido and frete > 0 and cod_entrega == None:
+            frete_formatado = float(frete)
+            if id_pedido == idpedido and frete_formatado > 0 and cod_entrega == None:
                 self.cod_entrega = str(uuid.uuid1())
-                atualizar = """UPDATE pedido SET cod_entrega = ? WHERE cod_carrinho_pedido = ?"""
+                atualizar = """UPDATE pedido SET cod_entrega = ? WHERE num_pedido = ?"""
 
                 cursor.execute(atualizar, (self.cod_entrega, id_pedido))
                 conexao.commit()
@@ -183,9 +183,8 @@ o cancelamento de um pedido seguindo as políticas de cancelamento informadas na
             return "Pedido não encontrado."
         
 
-p = Pedido("sim", "11012667324", 63260000, 1)
-print(p.calcular_subtotal())
-print(p.fechar_pedido())
+p = Pedido("sim", "11012667324", 63260000, 4)
+
 print(p.visualizar_meus_pedidos())
                 
         

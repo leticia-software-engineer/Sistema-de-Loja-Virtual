@@ -5,8 +5,8 @@ import json
 class Expedicao():
     '''A classe expedição é responsável por armazenar as informações da entrega do produto após ele ser faturado. Essa classe vai gerar um identificador
 para a entrega e marcar como entregue quando o cliente receber, e o entregador informar.'''
-    def __init__(self, cod_rastreio):
-        self.entrega = cod_rastreio
+    def __init__(self, cod_entrega):
+        self.entrega = cod_entrega
     
     def marcar_envio(self):
 
@@ -29,7 +29,7 @@ para a entrega e marcar como entregue quando o cliente receber, e o entregador i
             if status == "pago" or status == "pago parcialmente" and data_atual - data_pedido == 1:
                 status = "Enviado"
 
-                atualizar_status = "UPDATE pedido SET status = ? WHERE cod_rastreio = ?"
+                atualizar_status = "UPDATE pedido SET status = ? WHERE cod_entrega = ?"
                 dados = (status, self.entrega)
                 cursor.execute(atualizar_status, dados)
                 if cursor.rowcount != 0:
@@ -68,7 +68,7 @@ para a entrega e marcar como entregue quando o cliente receber, e o entregador i
                                 if entrega:
                                     data_entrega = data_envio + timedelta(days = entrega)
                                     if date.today() == data_entrega:
-                                        atualizar_status = "UPDATE pedido SET status = ? WHERE cod_rastreio = ?"
+                                        atualizar_status = "UPDATE pedido SET status = ? WHERE cod_entrega = ?"
                                         status = "Entregue"
                                         dados = (status, self.entrega)
                                         cursor.execute(atualizar_status, dados)
@@ -94,3 +94,5 @@ para a entrega e marcar como entregue quando o cliente receber, e o entregador i
         #a data da entrega deve ser extamente a quantidade de dias estimado depois do pedido enviado
 
     
+e = Expedicao("ab1571df-d175-11f0-b304-b857b09ff55d")
+print(e.marcar_envio())

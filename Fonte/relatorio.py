@@ -70,7 +70,6 @@ class Relatorio():
         sql_visualizar_pedidos = """SELECT produtos FROM pedido"""
         cursor.execute(sql_visualizar_pedidos)
         produtos_codigo_quantidade = cursor.fetchall()
-        conexao.close()
 
         #se forem encontrados produtos vendidos
         if produtos_codigo_quantidade:
@@ -78,20 +77,25 @@ class Relatorio():
             contar_codigos = Counter(codigos)
 
             ranking = contar_codigos.most_common()
-
+            ranking_salvar = []
             for codigo, quantidade in ranking:
 
                 sql_visualizar_produtos = """SELECT nome FROM produto WHERE cod = ?"""
-                cursor.execute(sql_visualizar_produtos, codigo)
-                nome_do_produto = cursor.fetchone()
-                print(f"Produto Código: {nome_do_produto} - Vendido: {quantidade} vezes")
+                cursor.execute(sql_visualizar_produtos, (codigo,))
+                nome_do_produto = cursor.fetchall()
+                nome_formatado = str(nome_do_produto)
 
-                #guardar no json
-                json_string = json.dumps(ranking, indent=4) 
-                nome_arquivo = "ranking.json"
-                with open(nome_arquivo, 'w', encoding='utf-8') as f:
-                    f.write(json_string)
-                return f"Ranking de produtos vendidos salvo em: {nome_arquivo}"
+                ranking_salvar.append({
+                    "codigo": codigo,
+                    "nome": nome_formatado,
+                    "quantidade_vendida": quantidade
+                })
+
+            json_string = json.dumps(ranking_salvar, indent=4) 
+            nome_arquivo = "ranking.json"
+            with open(nome_arquivo, 'w', encoding='utf-8') as f:
+                f.write(json_string)
+            return f"Ranking de produtos vendidos salvo em: {nome_arquivo}"
                 
 
         else:
@@ -109,4 +113,4 @@ class Relatorio():
         pass
 
 r = Relatorio()
-print(r.faturamento_periodo())
+print(r.ranking())
