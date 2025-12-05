@@ -24,7 +24,8 @@ cursor.execute("""
 
 cursor.execute("""
     CREATE TABLE IF NOT EXISTS carrinho (
-                cod_carrinho INTEGER PRIMARY KEY AUTOINCREMENT,
+                chave INTEGER PRIMARY KEY AUTOINCREMENT,
+                cod_carrinho INTEGER NOT NULL,
                 nome TEXT NOT NULL, 
                 cod TEXT NOT NULL, 
                 preco REAL NOT NULL, 
@@ -42,13 +43,14 @@ cursor.execute("""
                 cod_carrinho INTEGER NOT NULL,
                 produtos TEXT NOT NULL,
                 frete TEXT,
-                cod_entrega TEXT)
+                cod_entrega TEXT,
+                confirme_cep TEXT)
 """)
 
 cursor.execute("""
     CREATE TABLE IF NOT EXISTS pagamento (
                 id_pagamento INTEGER PRIMARY KEY AUTOINCREMENT,
-                id_pedido TEXT FOREIGNH KEY NOT NULL,
+                num_pedido NOT NULL,
                 forma_pagamento TEXT NOT NULL, 
                 valor_pago REAL NOT NULL,
                 data_pagamento DATE NOT NULL)

@@ -16,6 +16,14 @@ o cancelamento de um pedido seguindo as políticas de cancelamento informadas na
         self.total = 0
         self.cod_carrinho_pedido = id_do_carrinho
         self.confirmar_cep = confirma_cep
+        self.cod_entrega = None
+        self.total_pedido = 0
+
+        
+        #iniciando as variáveis
+        self.total = 0
+        self.arquivo = None
+        self.frete = 0
 
     def calcular_subtotal(self, arquivo = "data/ceps_cotacoes_ceara.json"):
         #calcula primeiro o subtotal dos produtos que estão no carrinho
@@ -37,42 +45,57 @@ o cancelamento de um pedido seguindo as políticas de cancelamento informadas na
         self.arquivo = arquivo
         self.frete = 0
 
-        if result == None:
+        if not result:
             for produto in resultado:
                     
                 preco = produto[1]
                 quantidade = produto[2]
                 subtotal = preco * quantidade 
-                self.total = subtotal + self.total
+                self.total += subtotal
                 
             return self.total
         else:
+
+            ########Corrrigirrrrr########
             #verifica o cep do cliente 
             procurar_cep_do_cliente =  """SELECT cep FROM cliente WHERE cpf = ?"""
             cursor.execute(procurar_cep_do_cliente, (self.confirme_cpf,))
             cep_do_cliente = cursor.fetchone()
+            for produto in resultado:
+                    
+                preco = produto[1]
+                quantidade = produto[2]
+                subtotal = preco * quantidade 
+                self.total += subtotal
+                
 
             if cep_do_cliente:
-            
-                #verifica se a loja faz entrega para o cep informado
-                with open(self.arquivo, "r", encoding="utf-8") as arquivo:
-                    arquivo = json.load(arquivo)
-
-                for informacao in arquivo:
-                    if informacao["cep"] == cep_do_cliente:
-                        self.frete = informacao["cotacao"]
-
-                        preco = produto[1]
-                        quantidade = produto[2]
-                        subtotal = preco * quantidade 
-                        self.total = subtotal + self.total + self.frete
-                        return self.total
-                return "Não fazemos entrega para a região desse cliente"
-            return "Cep não identificado."
+                
+                cep_do_cliente = str(cep_do_cliente[0]) 
+            else:
+                conexao.close()
+                return "Não foi possível encontrar o CEP do cliente." 
         
+            with open(self.arquivo, "r", encoding="utf-8") as arquivo:
+                dados = json.load(arquivo)
+                frete_encontrado = False
+
+                for informacao in dados:
+                    cep_cadastrado_json = informacao["cep"]
+                    if cep_cadastrado_json == cep_do_cliente:
+                        self.frete = informacao["cotacao"]
+                        self.total += self.frete
+                        frete_encontrado = True
+                        break
+                if frete_encontrado == True:
+                    return self.total
+           
+            
     def fechar_pedido(self):
         if self.confirmar.lower() != "sim":
             return "Pedido não confirmado foi cancelado."
+        elif self.total == 0:
+            return "Subtotal não calculado."
         else:
             #pegar os itens do carrinho e fechar o pedido
             conexao = sqlite3.connect("loja virtual.db")
@@ -82,7 +105,7 @@ o cancelamento de um pedido seguindo as políticas de cancelamento informadas na
             cliente_encontrado = cursor.fetchall()
 
             if cliente_encontrado:
-                sql_conferir_carrinho = """SELECT nome, quantidade FROM carrinho WHERE cod_carrinho= ?"""
+                sql_conferir_carrinho = """SELECT cod, quantidade FROM carrinho WHERE cod_carrinho= ?"""
                 cursor.execute(sql_conferir_carrinho, (self.cod_carrinho_pedido,))
                 carrinho = cursor.fetchall()
                 
@@ -91,18 +114,18 @@ o cancelamento de um pedido seguindo as políticas de cancelamento informadas na
                     status = "Aguardando pagamento"
                     produtos_str = []
                     for produto in carrinho:
-                        nome, quantidade = produto
-                        produtos_str.append(f"{nome} ({quantidade})")
+                        cod, quantidade = produto
+                        produtos_str.append(f"{cod} ({quantidade})")
 
                     produtos_para_db = "; ".join(produtos_str)
                                         
                     #fechar o pedido  
                     sql_insert_pedido = """
-                    INSERT INTO pedido (data, cliente_cpf, total, status, cod_carrinho, produtos, frete, cod_entrega)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                    INSERT INTO pedido (data, cliente_cpf, total, status, cod_carrinho, produtos, frete, cod_entrega, confirme_cep)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
                     """
                     data_formatada = self.data.isoformat()
-                    valores = (data_formatada, self.confirme_cpf, self.total, status, self.cod_carrinho_pedido, produtos_para_db, self.frete, self.cod_entrega)
+                    valores = (data_formatada, self.confirme_cpf, self.total, status, self.cod_carrinho_pedido, produtos_para_db, self.frete, self.cod_entrega, self.confirmar_cep)
                     
                     cursor.execute(sql_insert_pedido, valores)
                     conexao.commit()
@@ -110,6 +133,7 @@ o cancelamento de um pedido seguindo as políticas de cancelamento informadas na
                     cursor.execute(sql_esvaziar_carrinho, (self.cod_carrinho_pedido,))
                     conexao.commit()
                     conexao.close()
+                    
                     return "Pedido salvo, aguardando pagamento."
                 else:
                     conexao.close()
@@ -137,7 +161,7 @@ o cancelamento de um pedido seguindo as políticas de cancelamento informadas na
         conexao = sqlite3.connect("loja virtual.db")
         cursor = conexao.cursor()
 
-        visualizar = """SELECT num_pedido, frete, cod_entrega from pedido where num_pedido = ?"""
+        visualizar = """SELECT cod_carrinho_pedido, frete, cod_entrega from pedido where cod_carrinho_pedido = ?"""
         cursor.execute(visualizar, (id_pedido,))
         pedido = cursor.fetchone()
 
@@ -145,9 +169,9 @@ o cancelamento de um pedido seguindo as políticas de cancelamento informadas na
             idpedido, frete, cod_entrega = pedido
             if id_pedido == idpedido and frete > 0 and cod_entrega == None:
                 self.cod_entrega = str(uuid.uuid1())
-                atualizar = """UPDATE pedido SET cod_entrega = ? WHERE num_pedido = ?"""
+                atualizar = """UPDATE pedido SET cod_entrega = ? WHERE cod_carrinho_pedido = ?"""
 
-                cursor.execute(atualizar, (self.cod_entrega,))
+                cursor.execute(atualizar, (self.cod_entrega, id_pedido))
                 conexao.commit()
 
                 if cursor.rowcount > 0:
@@ -158,13 +182,12 @@ o cancelamento de um pedido seguindo as políticas de cancelamento informadas na
         else:
             return "Pedido não encontrado."
         
-    def cancelar_pedido(self):
-        #selecionar informaçoes do pedido 
-        #se stutus == pago permitir cancelamento
-        #estorno do pagamento
-        #estorno do estoque
+
+p = Pedido("sim", "11012667324", 63260000, 1)
+print(p.calcular_subtotal())
+print(p.fechar_pedido())
+print(p.visualizar_meus_pedidos())
+                
         
-        pass
-    def __str__(self):
-        return f"Pedido: {self.cod_pedido} | Cliente: {self.nome} | Total: R${self.calcular_total():.2f} | Status: {self.status}"
+        
     

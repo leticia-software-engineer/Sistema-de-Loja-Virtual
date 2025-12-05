@@ -7,14 +7,13 @@ class Carrinho():
     novamente adicionado.
     '''
 
-    def adicionar_carrinho(self, nome, codigo, quantidade, com_frete):
+    def adicionar_carrinho(self,id_para_carrinho, codigo_produto, quantidade, com_frete):
         "Esse metódo é responsável por pegar produtos cadastrados e adicioná-los ao carrinho conforme escolha do cliente"
-        self.nome = nome
-        self.cod = codigo
+        self.cod = codigo_produto
         self.quantidade = quantidade
         self.frete = com_frete
+        self.id_carrinho = id_para_carrinho
 
-        #metodo para adicionar produtos ao carrinho.
         conexao = sqlite3.connect("loja virtual.db")
         cursor = conexao.cursor()
 
@@ -42,10 +41,11 @@ class Carrinho():
                     nome_produto = resultado[0] 
                     preco_produto = resultado[3]
                     estoque = resultado[4]
+
                     if estoque >= self.quantidade:
                         #se a quantidade escolhida for maior que o estoque disponível para o produto, permitir adicao ao carrinho
-                        adicionar_no_carrinho = """INSERT INTO carrinho(nome, cod, preco, quantidade, frete) VALUES(?, ?, ?, ?, ?)"""
-                        dados = (nome_produto, self.cod, preco_produto, self.quantidade, self.frete)
+                        adicionar_no_carrinho = """INSERT INTO carrinho(cod_carrinho, nome, cod, preco, quantidade, frete) VALUES(?, ?, ?, ?, ?, ?)"""
+                        dados = (self.id_carrinho, nome_produto, self.cod, preco_produto, self.quantidade, self.frete)
 
                         cursor.execute(adicionar_no_carrinho, dados)
                         conexao.commit()
@@ -131,3 +131,8 @@ class Carrinho():
         conexao.close()
         return count
     
+c = Carrinho()
+print(c.adicionar_carrinho(1, 1, 2, "sim"))
+print(c.adicionar_carrinho(1, 2, 1, "sim"))
+
+print(c.visualizar_carrinho())

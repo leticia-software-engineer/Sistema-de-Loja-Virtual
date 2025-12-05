@@ -10,7 +10,6 @@ class Produto():
         self.categoria = categoria
         self.preco = float(preco_unitario)
         self.estoque = estoque
-        self.frete = "Com frete."
 
     @property
     def cod(self):

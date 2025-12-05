@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
-auth_routes = APIRouter(prefix="/autenticacao", tags=["autenticacao"])
+cliente_routes = APIRouter(prefix="/autenticacao", tags=["autenticacao"])
 
-@auth_routes.get("/")
+@cliente_routes.get("/")
 async def autenticar(self):
     return {"autenticacao": "rota de autenticação", "autenticado": False}

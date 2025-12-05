@@ -49,8 +49,8 @@ class Cliente():
         if len(cpf_validacao) == 11:
             self.__cpf = cpf_validacao
         else:
-            raise ValueError("CPF deve conter 11 dígitos")
-        
+            print("CPF deve conter 11 dígitos")
+            
     @rua.setter
     def rua(self, rua_valida):
         if len(rua_valida) > 0 :
@@ -155,3 +155,5 @@ class Cliente():
             #se não foi excluída, é porque não foi encontrada
             return "Conta não encontrada."
 
+c = Cliente("Letícia", "leticia@gmail.com", "11012667324", "Maria", "63260000")
+print(c.cadastrar())

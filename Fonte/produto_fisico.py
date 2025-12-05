@@ -2,7 +2,7 @@ import sqlite3
 from produto import Produto
 
 class ProdutoFisico(Produto):
-    def __init__(self, nome, codigo, categoria, preco_unitario, estoque, frete = "Com frete incluso"):
+    def __init__(self, nome, codigo, categoria, preco_unitario, estoque, frete = "sim"):
         super().__init__(nome, codigo, categoria, preco_unitario, estoque)
         self.nome = nome
         self.__cod = str(codigo)
@@ -11,32 +11,29 @@ class ProdutoFisico(Produto):
         self.__estoque = estoque
         self.frete = frete
 #CRUD
-    def cadastrar(self, adicionar_estoque):
-        if adicionar_estoque.lower() != "sim":
-            conexao = sqlite3.connect("loja virtual.db")
-            cursor = conexao.cursor()
+    def cadastrar(self):
+        
+        conexao = sqlite3.connect("loja virtual.db")
+        cursor = conexao.cursor()
 
-            sql_checar = "SELECT cod FROM produto WHERE cod = ?"
-            cursor.execute(sql_checar, (self.__cod,))
-            pesq = cursor.fetchone()
+        sql_checar = "SELECT cod FROM produto WHERE cod = ?"
+        cursor.execute(sql_checar, (self.__cod,))
+        pesq = cursor.fetchone()
+        if pesq == None:
+            sql_inserir = """
+            INSERT INTO produto(nome, cod, categoria, preco, estoque, frete)
+            VALUES(? ,? ,? ,? ,?, ? )
+            """
+            dados_produto = (self.nome, self.__cod, self.categoria, self.__preco, self.__estoque, self.frete)
 
-            if pesq == None:
-                sql_inserir = """
-                INSERT INTO produto(nome, cod, categoria, preco, estoque, frete)
-                VALUES(? ,? ,? ,? ,?, ? )
-                """
-                dados_produto = (self.nome, self.__cod, self.categoria, self.__preco, self.__estoque, self.frete)
+            cursor.execute(sql_inserir, dados_produto)
+            conexao.commit()
+            conexao.close()
 
-                cursor.execute(sql_inserir, dados_produto)
-                conexao.commit()
-                conexao.close()
-
-                return f"Produto {self.nome} cadastrado com sucesso."
-            else: 
-                print("Já existe um produto cadastrado com esse codigo, caso queira proseguir informe que deseja adicionar estoque.")
-        else:
-            #atualizar estoque
-            pass
+            return f"Produto {self.nome} cadastrado com sucesso."
+        else: 
+            conexao.close()
+            return "Já existe um produto cadastrado com esse codigo"
 
 
     def ler(self):
@@ -87,14 +84,9 @@ class ProdutoFisico(Produto):
             conexao.close()
             return f"Produto não encontrado para excluir."
 
-    def ajustar_estoque_entrada(self):
-        #controlar estoque dos produtos
-        #se um produto for atualizado e for acrescentado estoque, seu estoque seve ser atualizado.
-        #se uma venda for cancelada o estoque deve ser estornado
-        
-        pass
-    def ajustar_estoque_saida(self):
-        #controlar estoque dos produtos
-        #após confirmação de pedido o estoque do produto deve ser subtraído
-        pass
-
+p = ProdutoFisico("Teste", 1, "teste", 12, 10)
+print(p.cadastrar())
+p1 = ProdutoFisico("Sabão", 2, "limpeza", 8, 100)
+print(p1.cadastrar())
+a = ProdutoFisico("Abacaxi", 3, "fruta", 6, 4)
+print(a.cadastrar())

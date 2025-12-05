@@ -2,8 +2,8 @@ from fastapi import FastAPI
 
 app = FastAPI()
 
-from rotas.rotas_aut import auth_routes
-from rotas.rotas import routes
+from api.rotas.rotas_aut import auth_routes
+from api.rotas.rotas import routes
 
 app.include_router(auth_routes)
 app.include_router(routes)

@@ -1,12 +1,12 @@
 # Sistema-de-Loja-Virtual - AbraCaxi
 
-O AbraCaxi é um projeto de POO que simula um e-commerce no qual é possível realizar compras de produtos diversos. No sistema é possível, escolher os produtos a comprar, adicionar ao carrinho, realizar a compra, confirmar o pagamento, visualizar os cupons disponíveis, os produtos mais vendidos e a tabela de valores de frete conforme o cep. O objetivo do projeto é aplicar de forma prática conceitos importantes da programação orientada a objetos utilizando a linguagem python para elaboração do back end, empregando conceitos importantes da programação orientada a objetos, tais como: herança, encapsulamento, validações e composição.
+O AbraCaxi é um projeto de POO que simula um e-commerce no qual é possível realizar compras de produtos físicos e digitais. No sistema é possível escolher os produtos, adicionar ao carrinho, realizar a compra, confirmar o pagamento, acompanhar a entrega, conferir os produtos mais vendidos e a tabela de valores de frete conforme o cep, gerar relatórios de faturamento diário e mensal, status de pedidos, vendas e outros. O objetivo do projeto é aplicar de forma prática conceitos importantes da programação orientada a objetos empregando conceitos importantes tais como: herança, encapsulamento, validações e composição. As principais tecnologias utilizadas no desenvolvimento do projeto foram: python, como linguagem de programação, sqlite, para a persistência dos dados e FastApi com framework para a criação da API.
 
 # Estrutura 
 
 loja virtual/
 ├── data/<br>
-│   ├── loja virtual.db<br>
+│   ├──ceps_cotacoes_ceara.json<br>
 │   └── sqlite.py<br>
 |<br>
 ├── Fonte/<br>
@@ -15,11 +15,12 @@ loja virtual/
 │   ├── carrinho.py<br>
 │   ├── cliente.py<br>
 │   ├── configuracoes.py<br>
-│   ├── cupom.py<br>
 │   ├── expedicao.py<br>
 │   ├── frete.py<br>
-│   ├── pagamento.py<br>
+│   ├── pagamentos.py<br>
 │   ├── pedido.py<br>
+│   ├── produto_digital.py<br>
+│   ├── produto_fisico.py<br>
 │   ├── produto.py<br>
 │   └── relatorio.py<br>
 |<br>
@@ -30,13 +31,10 @@ loja virtual/
 │   └── rotas.py<br>
 |
 ├── Utilitarios/<br>
-│   ├── testes/<br>
-│   │   ├── pytest.ini<br>
-│   │   └── testes.py<br>
-│   ├── calculos.py<br>
+│   ├── LICENSE <br>
 │   └── requirements.txt<br>
 |<br>
-├── LICENSE<br>
+├── loja virtual.db<br>
 ├── main.py<br>
 └── README.md<br>
 
@@ -55,3 +53,21 @@ loja virtual/
 | **CupomDesconto** | aplicar_desconto                                       | cod_cupom, valor, validade, caso_uso, categoria               | Pedido                             |
 | **Configuracoes** | politica_cancelamento, perfil, tabela_frete, top_produtos, validade_cupons, limite_parcelas | —                                                            | Frete, Produto, CupomDesconto |
 |
+
+Ceps disponíveis para teste 
+63210000     32.0             18
+63260000     30.0              7
+63240000     37.0             12
+63136000     30.0             25
+63137000     32.0              5
+63180000     10.0             29
+63138000     30.0             14
+63139000     30.0             22
+63510000     20.0              9
+63511000     40.0              3
+63512000     20.0             30
+63010900     10.0             13
+63010905     20.0              8
+63250000     40.0             19
+63255000     20.0              4
+63165000     10.0             27

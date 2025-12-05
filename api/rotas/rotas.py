@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
-routes = APIRouter(prefix= "/ordens", tags=["ordens"])
+menu_routes = APIRouter(prefix= "/menu", tags=["menu"])
 
-@routes.get("/")
+@menu_routes.get("/")
 async def sum(self):
     return {"mensagem" : "olá"}
