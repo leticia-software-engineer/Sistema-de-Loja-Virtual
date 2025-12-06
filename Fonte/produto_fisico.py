@@ -1,5 +1,5 @@
 import sqlite3
-from produto import Produto
+from Fonte.produto import Produto
 
 class ProdutoFisico(Produto):
     def __init__(self, nome, codigo, categoria, preco_unitario, estoque, frete = "sim"):
@@ -84,9 +84,3 @@ class ProdutoFisico(Produto):
             conexao.close()
             return f"Produto não encontrado para excluir."
 
-p = ProdutoFisico("Teste", 1, "teste", 12, 10)
-print(p.cadastrar())
-p1 = ProdutoFisico("Sabão", 2, "limpeza", 8, 100)
-print(p1.cadastrar())
-a = ProdutoFisico("Abacaxi", 3, "fruta", 6, 4)
-print(a.cadastrar())

@@ -1,4 +1,4 @@
-from cliente import Cliente
+from Fonte.cliente import Cliente
 import pytest
 
 def test_cadastro_de_cliente():

@@ -1,4 +1,4 @@
-from pedido import Pedido
+from Fonte.pedido import Pedido
 import pytest
 
 def test_calculo_de_subtotal_pedido():

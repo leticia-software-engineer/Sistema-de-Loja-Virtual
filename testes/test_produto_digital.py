@@ -1,5 +1,5 @@
 import pytest
-from produto_digital import ProdutoDigital
+from Fonte.produto_digital import ProdutoDigital
 
 def test_verificar_cadastro_de_produto_digital_valido():
     produto_valido = ProdutoDigital("Ebook O Pequeno Principe", 3, "livros", 20, 20)

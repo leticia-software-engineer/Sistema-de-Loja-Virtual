@@ -11,4 +11,3 @@ cliente = Table('cliente', metadata, autoload_with=engine)
 pagamento = Table('pagamento', metadata, autoload_with=engine)
 carrinho = Table('carrinho', metadata, autoload_with=engine)
 
-

@@ -1,5 +1,5 @@
 import pytest
-from carrinho import Carrinho
+from Fonte.carrinho import Carrinho
 
 def test_adicionar_produto_valido_ao_carrinho():
     carrinho = Carrinho()
