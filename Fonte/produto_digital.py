@@ -1,5 +1,5 @@
 import sqlite3
-from produto import Produto
+from Fonte.produto import Produto
 
 class ProdutoDigital(Produto):
     def __init__(self, nome, codigo, categoria, preco_unitario, estoque):

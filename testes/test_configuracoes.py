@@ -1,2 +1,0 @@
-import pytest
-from configuracoes import Configuracoes

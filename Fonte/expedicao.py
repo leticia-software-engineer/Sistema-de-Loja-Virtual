@@ -97,5 +97,4 @@ para a entrega e marcar como entregue quando o cliente receber, e o entregador i
         #a data da entrega deve ser extamente a quantidade de dias estimado depois do pedido enviado
 
     
-e = Expedicao("ca329410-d20d-11f0-b373-b857b09ff55d")
-print(e.marcar_envio())
+    

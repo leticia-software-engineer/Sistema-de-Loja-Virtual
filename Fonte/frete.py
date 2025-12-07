@@ -16,6 +16,3 @@ class Frete():
                 return f"Valor do frete: {self.valor}\nPrazo de entrega: {self.prazo} dias"
             
         return "Não fazemos entrega na localidade informada."
-
-instancia = Frete("63210000")
-print(instancia.verificar_valor_frete())

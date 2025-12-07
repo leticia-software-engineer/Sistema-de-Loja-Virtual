@@ -155,5 +155,3 @@ class Cliente():
             #se não foi excluída, é porque não foi encontrada
             return "Conta não encontrada."
 
-c = Cliente("Letícia", "leticia@gmail.com", "11012667324", "Maria", "63260000")
-print(c.cadastrar())

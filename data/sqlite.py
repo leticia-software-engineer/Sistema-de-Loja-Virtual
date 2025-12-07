@@ -37,7 +37,6 @@ cursor.execute("""
     CREATE TABLE IF NOT EXISTS pedido (
                 num_pedido INTEGER PRIMARY KEY AUTOINCREMENT,
                 data DATETIME NOT NULL,
-                cliente_cpf TEXT NOT NULL,
                 total REAL NOT NULL,
                 status TEXT NOT NULL,
                 cod_carrinho INTEGER NOT NULL,

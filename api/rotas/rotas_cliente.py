@@ -26,7 +26,7 @@ def cadastrar(usuario: cliente):
     )
 
     resultado = cliente.cadastrar()  
-    return {"mensagem": "Cliente cadastrado com sucesso!", "dados": resultado}
+    return {"dados": resultado}
 
 
 @cliente_routes.post("/acessodocliente/ler/", response_model=None)
@@ -42,7 +42,7 @@ def ler(usuario: cliente):
 
     resposta = cliente.ler()  
 
-    return {"mensagem": "Cliente encontrado com sucesso!", "dados": resposta}
+    return {"dados": resposta}
 
 @cliente_routes.post("/acessodocliente/atualizar/", response_model=None)
 def atualizar(usuario: cliente):
@@ -58,7 +58,7 @@ def atualizar(usuario: cliente):
     resposta = cliente.atualizar() 
     responda = cliente.ler() 
 
-    return {"mensagem": "Cliente atualizado com sucesso!", "dados": responda}
+    return {"dados": responda}
 
 @cliente_routes.post("/acessodocliente/deletar/", response_model=None)
 def deletar(usuario: cliente):
@@ -73,4 +73,4 @@ def deletar(usuario: cliente):
 
     resposta = cliente.deletar() 
 
-    return {"mensagem": "Dados do cliente excluídos com sucesso!", "dados": resposta}
+    return {"dados": resposta}

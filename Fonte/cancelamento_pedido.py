@@ -7,8 +7,8 @@ class CancelarPedido(Pedido):
     No caso de produtos que já foram pagos ela estorna o pagamento e o estoque, quando o pagamento ainda não foi feito ela estorna apenas o estoque
     e se o pedido já foi enviado, entregue ou cancelado ela não realiza a operação de cancelamento.'''
 
-    def __init__(self, confirmar, confirme_cpf, confirma_cep, id_do_carrinho, num_pedido):
-        super().__init__(confirmar, confirme_cpf, confirma_cep, id_do_carrinho)
+    def __init__(self, confirmar, id_do_carrinho, confirma_cep, num_pedido):
+        super().__init__(confirmar, id_do_carrinho, confirma_cep)
         #inicializa as variáveis definindo o status como Cancelado
         self.num_pedido = num_pedido 
         self.status = "Cancelado"         

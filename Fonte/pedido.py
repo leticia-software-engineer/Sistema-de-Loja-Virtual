@@ -8,13 +8,12 @@ class Pedido():
     '''A classe Pedido armazena todos os dados da compra e a partir das informações gera um cupom da venda, além disso ela é responsável por permitir 
 o cancelamento de um pedido seguindo as políticas de cancelamento informadas nas configurações.'''
 
-    def __init__(self, confirmar, confirme_cpf, confirma_cep, id_do_carrinho):
+    def __init__(self, confirmar, id_do_carrinho, confirma_cep):
         
         self.data_pedido = datetime.now()
         self.confirmar = str(confirmar)
-        self.confirme_cpf = confirme_cpf
+        self.id_do_carrinho = id_do_carrinho
         self.total = 0
-        self.num_pedido = id_do_carrinho
         self.confirmar_cep = confirma_cep
         self.cod_entrega = None
         self.total_pedido = 0
@@ -25,8 +24,7 @@ o cancelamento de um pedido seguindo as políticas de cancelamento informadas na
         self.arquivo = None
         self.frete = 0
 
-    def calcular_subtotal(self, arquivo = "data/ceps_cotacoes_ceara.json"):
-        #calcula primeiro o subtotal dos produtos que estão no carrinho
+    def calcular_subtotal_com_frete(self, arquivo = "data/ceps_cotacoes_ceara.json"):
         conexao = sqlite3.connect("loja virtual.db")
         cursor = conexao.cursor()
 
@@ -58,7 +56,7 @@ o cancelamento de um pedido seguindo as políticas de cancelamento informadas na
 
             #verifica o cep do cliente 
             procurar_cep_do_cliente =  """SELECT cep FROM cliente WHERE cpf = ?"""
-            cursor.execute(procurar_cep_do_cliente, (self.confirme_cpf,))
+            cursor.execute(procurar_cep_do_cliente, (self.id_do_carrinho,))
             cep_do_cliente = cursor.fetchone()
             for produto in resultado:
                     
@@ -90,6 +88,27 @@ o cancelamento de um pedido seguindo as políticas de cancelamento informadas na
                     return self.total
            
             
+           
+    def calcular_subtotal(self):
+        #calcula primeiro o subtotal dos produtos que estão no carrinho
+        self.total = 0
+        conec = sqlite3.connect("loja virtual.db")
+        cursor = conec.cursor()
+        sql_ver_precos = """SELECT nome, preco, quantidade FROM carrinho WHERE cod_carrinho = ?"""
+        cursor.execute(sql_ver_precos, (self.id_do_carrinho,))
+        resultado = cursor.fetchall()
+        if resultado:
+            for produto in resultado:
+                    
+                preco = produto[1]
+                quantidade = produto[2]
+                subtotal = preco * quantidade 
+                self.total = subtotal + self.total
+                
+            return self.total
+        else:
+            return "Carrinho não encontrado"
+
     def fechar_pedido(self):
         if self.confirmar.lower() != "sim":
             return "Pedido não confirmado foi cancelado."
@@ -100,12 +119,12 @@ o cancelamento de um pedido seguindo as políticas de cancelamento informadas na
             conexao = sqlite3.connect("loja virtual.db")
             cursor = conexao.cursor()
             sql_ver_cliente = """SELECT nome FROM cliente WHERE cpf = ?"""
-            cursor.execute(sql_ver_cliente, (self.confirme_cpf,))
+            cursor.execute(sql_ver_cliente, (self.id_do_carrinho,))
             cliente_encontrado = cursor.fetchall()
 
             if cliente_encontrado:
                 sql_conferir_carrinho = """SELECT cod, quantidade FROM carrinho WHERE cod_carrinho= ?"""
-                cursor.execute(sql_conferir_carrinho, (self.num_pedido,))
+                cursor.execute(sql_conferir_carrinho, (self.id_do_carrinho,))
                 carrinho = cursor.fetchall()
                 
                 if carrinho:
@@ -124,72 +143,50 @@ o cancelamento de um pedido seguindo as políticas de cancelamento informadas na
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
                     """
                     data_formatada = self.data.isoformat()
-                    valores = (data_formatada, self.confirme_cpf, self.total, status, self.num_pedido, produtos_para_db, self.frete, self.cod_entrega, self.confirmar_cep)
+                    valores = (data_formatada, self.id_do_carrinho, self.total, status, self.id_do_carrinho, produtos_para_db, self.frete, self.cod_entrega, self.confirmar_cep)
                     
                     cursor.execute(sql_insert_pedido, valores)
                     conexao.commit()
+                    print("Pedido fechado")
                     sql_esvaziar_carrinho = """DELETE FROM carrinho WHERE cod_carrinho = ?"""
-                    cursor.execute(sql_esvaziar_carrinho, (self.num_pedido,))
+                    cursor.execute(sql_esvaziar_carrinho, (self.id_do_carrinho,))
                     conexao.commit()
-                    conexao.close()
                     
-                    return "Pedido salvo, aguardando pagamento."
-                else:
-                    conexao.close()
-                    return "Não foram encontradas informações no carrinho"
-            else:
-                return "Cliente não encontrado."
+                    visualizar = """SELECT cod_carrinho, frete, cod_entrega from pedido where cod_carrinho = ?"""
+                    cursor.execute(visualizar, (self.id_do_carrinho,))
+                    pedido = cursor.fetchone()
+
+                    if pedido:
+                        id_pedido, frete, cod_entrega = pedido
+                        frete_formatado = float(frete)
+                        if pedido:
+                            self.cod_entrega = str(uuid.uuid1())
+                            atualizar = """UPDATE pedido SET cod_entrega = ? WHERE cod_carrinho = ?"""
+
+                            cursor.execute(atualizar, (self.cod_entrega, self.id_do_carrinho))
+                            conexao.commit()
+
+                            if cursor.rowcount > 0:
+                                return f"Pedido habilitado para frete. Código de rasteamento {self.cod_entrega}"
+                            else:
+                                return "pedido não habilitado para frete"
+                        else:
+                            return "Pedido não habilitado para frete"
+                    else:
+                        return "Pedido não encontrado"
     def visualizar_meus_pedidos(self):
         conexao = sqlite3.connect("loja virtual.db")
         cursor = conexao.cursor()
 
         visualizar = """SELECT * from pedido where cliente_cpf = ?"""
-        cursor.execute(visualizar, (self.confirme_cpf,))
+        cursor.execute(visualizar, (self.id_do_carrinho,))
         r_busca = cursor.fetchall()
         if r_busca:
-            self.num_pedido = r_busca[0][0]
+            self.id_do_carrinho = r_busca[0][0]
             conexao.close()
             
             return r_busca
         else:
             conexao.close()
             return "Não foram encontrados pedidos desse cliente."
-            
-    def informacoes_da_entrega(self, id_pedido):
-
-        conexao = sqlite3.connect("loja virtual.db")
-        cursor = conexao.cursor()
-
-        visualizar = """SELECT num_pedido, frete, cod_entrega from pedido where num_pedido = ?"""
-        cursor.execute(visualizar, (id_pedido,))
-        pedido = cursor.fetchone()
-
-        if pedido:
-            idpedido, frete, cod_entrega = pedido
-            frete_formatado = float(frete)
-            if id_pedido == idpedido and frete_formatado > 0 and cod_entrega == None:
-                self.cod_entrega = str(uuid.uuid1())
-                atualizar = """UPDATE pedido SET cod_entrega = ? WHERE num_pedido = ?"""
-
-                cursor.execute(atualizar, (self.cod_entrega, id_pedido))
-                conexao.commit()
-
-                if cursor.rowcount > 0:
-                    return f"Pedido habilitado para frete. Código de rasteamento {self.cod_entrega}"
-
-            else:
-                return "Pedido não habilitado para frete."
-        else:
-            return "Pedido não encontrado."
-        
-
-p = Pedido("sim", "11012667324", 63260000, 1)
-print(p.calcular_subtotal())
-print(p.fechar_pedido())
-print(p.visualizar_meus_pedidos())
-print(p.informacoes_da_entrega(1))
-
-                
-        
-        
-    
+         

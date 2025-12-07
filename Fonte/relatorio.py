@@ -1,7 +1,6 @@
 import sqlite3
 import json
 from datetime import date
-import bar_chart_race as brc
 from datetime import datetime
 from collections import defaultdict
 from collections import Counter
@@ -119,7 +118,7 @@ class Relatorio():
                 quantidade_total += quantidade
             for status in dicionario_para_guardar.values():
                 porcentagem = (status/quantidade_total)*100
-                porcentagens.append(f'{porcentagem} %')
+                porcentagens.append(f'{porcentagem: .2f} %')
             
         #distribuir para cada chave key do dicionario a respectiva porcentagem na lista
            
@@ -128,11 +127,9 @@ class Relatorio():
                 
                 # Adiciona a chave e a porcentagem correspondente
                 lista_status_porcentagem.append(chave)
-                lista_status_porcentagem.append(f'{porcentagem} %')
+                lista_status_porcentagem.append(f'{porcentagem: .2f} %')
 
         relatorio_pedidos_status = "relatorio de pedidos por status.json"                    
         with open(relatorio_pedidos_status, "w", encoding="utf-8") as arquivo:
             json.dump(dicionario_para_guardar, arquivo, ensure_ascii=False, indent=4)
         return f"Essa foi a porcentagem encontrada para cada status {lista_status_porcentagem} \nPara mais detalhes leia as quantidades de pedidos para cada status no arquivo {relatorio_pedidos_status}"            
-r = Relatorio()
-print(r.pedidos_por_status())

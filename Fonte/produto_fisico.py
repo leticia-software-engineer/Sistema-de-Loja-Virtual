@@ -29,8 +29,8 @@ class ProdutoFisico(Produto):
             cursor.execute(sql_inserir, dados_produto)
             conexao.commit()
             conexao.close()
-
             return f"Produto {self.nome} cadastrado com sucesso."
+           
         else: 
             conexao.close()
             return "Já existe um produto cadastrado com esse codigo"
