@@ -55,7 +55,8 @@ para a entrega e marcar como entregue quando o cliente receber, e o entregador i
         cursor.execute(sql_ver_pedido, (self.entrega,))
         dados = cursor.fetchone()
 
-        status, data, confirme_cep = dados
+        status = dados[0]
+        data = dados[1]
         data_envio = datetime.fromisoformat(data)
         data_atual = datetime.now()
         confirme_cep = dados[2]

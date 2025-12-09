@@ -29,5 +29,14 @@ def marcarenvio(marcar: expedicao):
     resposta = envioinstancia.marcar_envio()
     return{"dados": resposta}
 
+@frete_routes.post("/marcarentregue")
+def marcarentregue(marcar: expedicao):
+    envioinstancia = Expedicao(
+        marcar.codigo_de_entrega
+    )
+
+    resposta = envioinstancia.marcar_entregre()
+    return{"dados": resposta}
+
 
     
