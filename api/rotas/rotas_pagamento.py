@@ -12,7 +12,7 @@ class pagamento(BaseModel):
     num_pedido: int
     forma_pagamento: str = Field(..., min_length=3, max_length=20)
     valor_pago: float = Field(..., gt=0)
-    data_pagamento: str
+    status: str
     
 @pagamento_routes.post("/registrodopagamento", response_model=None)
 def calcular(pag: pagamento):
@@ -21,7 +21,8 @@ def calcular(pag: pagamento):
         pag.num_pedido,
         pag.forma_pagamento,
         pag.valor_pago,
-        pag.data_pagamento )
-
+        pag.status)
+    
+    resposta1 = pedidoapagar.atualizar_estoque()
     resposta = pedidoapagar.registrar_pagamento()
     return  {"dados": resposta}

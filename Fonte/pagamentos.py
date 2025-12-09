@@ -37,9 +37,9 @@ class Pagamento():
                 self.valor_pago = encontrado[0]
                 self.valor_a_pagar = total[0] - self.valor_pago
                 if self.valor_pago <= self.valor_a_pagar:
-                    sql_salvar_pagamento = """INSERT INTO pagamento (id_pedido, forma_pagamento, self.valor_pago, data_pagamento)
+                    sql_salvar_pagamento = """INSERT INTO pagamento (id_pedido, forma_pagamento, valor_pago, data_pagamento)
                     VALUES (?, ?, ?, ?)"""
-                    dados_pagamento = (self.num_do_pedido, self.forma_pagamento, self.self.valor_pago, self.data_pagamento)
+                    dados_pagamento = (self.num_do_pedido, self.forma_pagamento, self.valor_pago, self.data_pagamento)
 
                     cursor.execute(sql_salvar_pagamento, dados_pagamento)
                     conexao.commit()
@@ -52,6 +52,7 @@ class Pagamento():
                         conexao.close()
                         return "Pagamento registrado"
                     else:
+                        conexao.close()
                         "Falha ao registrar pagamento."
                 else:
                     return "O valor digitado é maior que o valor devido. "
@@ -96,7 +97,45 @@ class Pagamento():
                 return "Pagamento não registrado."
         else:
             return "O pagamento só é registrado após sua confirmação."
-            
+        
+    def atualizar_estoque(self):
+        conexao = sqlite3.connect("loja virtual.db")
+        cursor = conexao.cursor()
 
-p = Pagamento(1, "pix", 62, "pago")
-print(p.registrar_pagamento())
+        sql_consultar_pedido = """SELECT produtos FROM pedido WHERE num_pedido = ?"""
+        cursor.execute(sql_consultar_pedido, (self.num_do_pedido,))
+        resultado = cursor.fetchone()
+
+        if resultado == None:
+            conexao.close()
+            return "Pedido não encontrado."
+
+        produtos = resultado[0]  # primeira coluna do SELECT
+
+        if produtos.strip() == "":
+            conexao.close()
+            return "Pedido não possui produtos."
+
+        produtos_lista = [p.strip() for p in produtos.split(';') if p.strip()]
+
+        for item in produtos_lista:
+           
+            cod, quantidade_str = item.split(' (')
+            cod = cod.strip()
+            quantidade = int(quantidade_str.replace(')', '').strip())
+           
+
+            sqlconsultarproduto = """SELECT estoque FROM produto WHERE cod = ?"""
+            cursor.execute(sqlconsultarproduto, (cod,))
+            produtoencontado = cursor.fetchone()
+
+            estoque_atual = produtoencontado[0]
+            novo_estoque = estoque_atual - quantidade
+
+            # atualizar estoque
+            sql_alterar_estoqueproduto = """UPDATE produto SET estoque = ? WHERE cod = ?"""
+            cursor.execute(sql_alterar_estoqueproduto, (novo_estoque, cod))
+
+        conexao.commit()
+        conexao.close()
+        return "Estoque atualizado com sucesso."

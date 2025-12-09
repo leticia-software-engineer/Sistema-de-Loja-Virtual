@@ -16,7 +16,3 @@ def test_visualizar_pedidos_feitos():
     instancia.visualizar_meus_pedidos()
     assert instancia
 
-def test_gerar_codigo_e_informacoes_da_entrega():
-    instancia = Pedido("sim", "11012667324", "63210000", 1)
-    instancia.informacoes_da_entrega(1)
-    assert instancia

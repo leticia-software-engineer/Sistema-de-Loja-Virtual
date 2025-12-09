@@ -16,15 +16,9 @@ de produtos na plataforma, o prazo de validade dos cupons, limite de parcelas e 
             tabela = pandas.DataFrame(dados)
             return tabela
 
-    def top_produtos(self):
-        #mostra produtos mais vendidos
-        pass
-    
     def politica_de_cancelamento(self):
         #exibe a politica de cancelamento do sistema, explicando as regras de cancelamento de um pedido
         return "Um pedido feito na plataforma só pode ser cancelado antes do seu status ser de Enviado, sendo um prazo de até 24 horas para solicitar o cancelamento."
     def orientacoes_da_aplicacao(self):
         return "Olá! Seja bem-vindo à plataforma de vendas digital AbraCaxi, para utilizar a nossa aplicação é simples. Inicialmente você poderá visualizar os produtos que possa ter interesse, depois disso é possível adicioná-los ao carrinho mencionando os dados desse produto. Logo após, para concluir a compra, em pedido deve-se informar os dados do carrinho e fechá-lo, depois disso é só confirmar o pagamento informando o número do pedido, o tipo de pagamento, o valor e o seu status. Caso seu pedido seja de um produto físico, é possível acompanhar o status dele pela expedição utilizando o código da entrega. Caso tenha alguma dúvida na utilização da plataforma, entre em contato com nosso suporte. Contato: devv.leticia@gmail.com"
     
-c = Configuracoes()
-print(c.tabela_frete())

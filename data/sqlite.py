@@ -52,7 +52,7 @@ cursor.execute("""
                 num_pedido NOT NULL,
                 forma_pagamento TEXT NOT NULL, 
                 valor_pago REAL NOT NULL,
-                data_pagamento DATE NOT NULL)
+                data_pagamento)
         
 """)
 

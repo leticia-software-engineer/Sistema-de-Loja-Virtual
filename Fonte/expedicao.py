@@ -17,11 +17,11 @@ para a entrega e marcar como entregue quando o cliente receber, e o entregador i
         cursor = conexao.cursor()
 
         #ver se o pedido já foi pago ou pago parcialmente
-        sql_ver_pedido = """SELECT status, data FROM pedido WHERE cod_entrega = ?"""
+        sql_ver_pedido = """SELECT status FROM pedido WHERE cod_entrega = ?"""
         cursor.execute(sql_ver_pedido, (self.entrega,))
         dados = cursor.fetchone()
 
-        status, data = dados
+        status = dados
         status_formatado = str(status)
 
         if dados:
@@ -32,6 +32,7 @@ para a entrega e marcar como entregue quando o cliente receber, e o entregador i
                 dados = (novo_status, self.entrega)
                 cursor.execute(atualizar_status, dados)
                 conexao.commit()
+                conexao.close()
                 if cursor.rowcount == 1:
                     return "Produto enviado."
                 else:

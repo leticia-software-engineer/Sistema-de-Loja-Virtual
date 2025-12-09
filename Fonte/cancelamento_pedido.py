@@ -1,5 +1,5 @@
 import sqlite3
-from pedido import Pedido
+from Fonte.pedido import Pedido
 from datetime import datetime
 
 class CancelarPedido(Pedido):
@@ -91,6 +91,3 @@ class CancelarPedido(Pedido):
             else:
                 return f"Não é possível cancelar esse pedido."
 
-
-p = CancelarPedido("sim", "11012667324", "63260000", 1, 1 )
-print(p.cancelar())
