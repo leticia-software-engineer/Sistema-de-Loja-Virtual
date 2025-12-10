@@ -95,8 +95,4 @@ para a entrega e marcar como entregue quando o cliente receber, e o entregador i
             return "Dados do pedido não foram encontrados"
 
         
-        #o prazo de entrega é dado pelo cep no arquivo json
-        #a data da entrega deve ser extamente a quantidade de dias estimado depois do pedido enviado
-
-    
-    
+       

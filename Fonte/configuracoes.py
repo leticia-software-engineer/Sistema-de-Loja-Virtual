@@ -5,8 +5,6 @@ class Configuracoes():
     '''A classe Configuracoes é responsável por apresentar ao usuário opções úteis, tais como: a tabela com os prazos de envio conforme o cep, o ranking
 de produtos na plataforma, o prazo de validade dos cupons, limite de parcelas e a apresentação da política de cancelamento.'''
 
-    def __init__(self):
-        pass
     def tabela_frete(self, arquivo = "data/ceps_cotacoes_ceara.json"):
         self.arquivo = arquivo
         #exibir tabela com cep e valor do frete bem como o prazo em dias para a entrega do produto
