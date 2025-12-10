@@ -1,0 +1,96 @@
+Intâncias de Cliente
+
+{
+  "nome": "Letícia",
+  "email": "leticia@gmail.com",
+  "cpf": "12312312345",
+  "rua": "José Feitosa",
+  "cep": "63260000"
+}
+
+{
+  "nome": "Laura",
+  "email": "laura@gmail.com",
+  "cpf": "20212345612",
+  "rua": "Avenida Velha",
+  "cep": "63240000"
+}
+
+{
+  "nome": "Júlia",
+  "email": "julia@gmail.com",
+  "cpf": "34581049234",
+  "rua": "Bela Vista",
+  "cep": "63210000"
+}
+
+Intâncias de produto físico
+
+{
+  "nome": "copo",
+  "cod": 1,
+  "categoria": "utensilios",
+  "preco": 3,
+  "estoque": 3,
+  "frete": "sim"
+}
+
+{
+  "nome": "tijela",
+  "cod": 2,
+  "categoria": "utensilios",
+  "preco": 70,
+  "estoque": 60,
+  "frete": "sim"
+}
+
+{
+  "nome": "garrafa",
+  "cod": 3,
+  "categoria": "utensilios",
+  "preco": 50,
+  "estoque": 60,
+  "frete": "sim"
+}
+
+Intâncias produto digital
+
+{
+  "nome": "Ebook O pequeno príncipe",
+  "cod": 4,
+  "categoria": "livro digital",
+  "preco": 20,
+  "estoque": 100
+}
+
+{
+  "nome": "Ebook O arco-íris do meu ser",
+  "cod": 5,
+  "categoria": "livro digital",
+  "preco": 30,
+  "estoque": 100
+}
+
+Intâncias de carrinho
+
+{
+  "cpf": "",
+  "codigo_produto": 1,
+  "quantidade": 1,
+  "com_frete": "sim"
+}
+
+{
+  "cpf": "11012667324",
+  "codigo_produto": 1,
+  "quantidade": 3,
+  "com_frete": "sim"
+}
+
+{
+  "confirmar": "sim",
+  "cpf": "11012667324",
+  "confirma_cep": "63260000"
+}
+
+92cd7baf-d4fe-11f0-b81d-b857b09ff55d"
