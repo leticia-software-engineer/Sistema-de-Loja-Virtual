@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 from Fonte.produto_digital import ProdutoDigital
 
@@ -15,38 +15,48 @@ class produtodigital(BaseModel):
 @produtodigital_routes.post("/cadastrarprodutodigital/", response_model = None)
 def cadastrar(produtod: produtodigital):
 
-    produtodigital = ProdutoDigital(
+    try:
+        produtodigital = ProdutoDigital(
         produtod.nome,
         produtod.cod,
         produtod.categoria,
         produtod.preco,
         produtod.estoque )
 
+    except ValueError as erro:
+        raise HTTPException(status_code=400, detail=str(erro))
     resposta = produtodigital.cadastrar()
     return  {"dados": resposta}
 
 @produtodigital_routes.post("/leituraprodutodigital/", response_model = None)
 def ler(produtod: produtodigital):
 
-    produtodigital = ProdutoDigital(
+    try:
+        produtodigital = ProdutoDigital(
         produtod.nome,
         produtod.cod,
         produtod.categoria,
         produtod.preco,
         produtod.estoque)
 
+    except ValueError as erro:
+        raise HTTPException(status_code=400, detail=str(erro))
+    
     resposta = produtodigital.ler()
     return  {"dados": resposta}
 
 @produtodigital_routes.post("/atualizarprodutodigital/", response_model = None)
 def atualizar(produtod: produtodigital):
 
-    produtodigital = ProdutoDigital(
+    try:
+        produtodigital = ProdutoDigital(
         produtod.nome,
         produtod.cod,
         produtod.categoria,
         produtod.preco,
         produtod.estoque )
+    except ValueError as erro:
+        raise HTTPException(status_code=400, detail=str(erro))
 
     resposta = produtodigital.atualizar()
     produto_atual = produtodigital.ler()
@@ -55,12 +65,15 @@ def atualizar(produtod: produtodigital):
 @produtodigital_routes.post("/deletarprodutodigital/", response_model = None)
 def deletar(produtod: produtodigital):
 
-    produtodigital = ProdutoDigital(
+    try:
+        produtodigital = ProdutoDigital(
         produtod.nome,
         produtod.cod,
         produtod.categoria,
         produtod.preco,
         produtod.estoque )
+    except ValueError as erro:
+        raise HTTPException(status_code=400, detail=str(erro))
 
     resposta = produtodigital.deletar()
     return  {"dados": resposta}

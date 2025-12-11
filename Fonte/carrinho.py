@@ -6,7 +6,7 @@ class Carrinho():
     na mesma compra. Além disso, com a classe Carrinho é possível remover itens do carrinho ou alterar a quantidade sempre que um produto que já esteja no carrinho for
     novamente adicionado.
     '''
-    def __init__(self, cpf, codigo_produto, quantidade, com_frete):
+    def __init__(self, cpf: str, codigo_produto: int, quantidade: int, com_frete: str):
         self.cod = codigo_produto
         self.quantidade = quantidade
         self.frete = com_frete
@@ -99,10 +99,7 @@ class Carrinho():
         itens = cursor.fetchall()
         conexao.close()
 
-        if not itens:
-            #se não forem encontrados itens
-            return "Carrinho está vazio."
-        else:
+        if itens:
             #se encontrados, mostrar
             return itens
         

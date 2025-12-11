@@ -3,7 +3,7 @@ from datetime import date
 class Pagamento():
     '''A classe pagamento registra as informações do pagamento como a forma do pagamente e o seu status e valida após ser confirmado.'''
 
-    def __init__(self, num_pedido, forma_pagamento, valor_pago, status):
+    def __init__(self, num_pedido: int, forma_pagamento: str, valor_pago: float, status: str):
         
         self.forma_pagamento = str(forma_pagamento)
         self.status = status

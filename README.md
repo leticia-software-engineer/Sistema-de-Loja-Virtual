@@ -2,8 +2,11 @@
 
 O AbraCaxi é um projeto de POO que simula um e-commerce no qual é possível realizar compras de produtos físicos e digitais. No sistema é possível escolher os produtos, adicionar ao carrinho, realizar a compra, confirmar o pagamento, acompanhar a entrega, conferir os produtos mais vendidos e a tabela de valores de frete conforme o cep, gerar relatórios de faturamento diário e mensal, status de pedidos, vendas e outros. O objetivo do projeto é aplicar de forma prática conceitos importantes da programação orientada a objetos empregando conceitos importantes tais como: herança, encapsulamento, validações e composição. As principais tecnologias utilizadas no desenvolvimento do projeto foram: python, como linguagem de programação, sqlite, para a persistência dos dados e FastApi como framework para a criação da API.
 
-# Uma breve explicação do código
+# Uma breve explicação da estrutura do código
 
+O código foi organizado utilizando a modularização para melhor organização. A pasta que armazena as classes do sistema é a Fonte, a pasta data contém o arquivo da criação do banco de dados e o json da tabela de fretes com os ceps, no diretório api, estão todas as rotas que foram utilizadas, em testes temos os testes utilizando pytest, em requisitos, os requisitos do projeto e em utilitários alguns arquivos extras.
+
+Os arquivos soltos são referentes à documentação, inicialização e armazenamento. O arquivo de inicialização da API é o main.py é nele que a aplicação com o FastApi é criada e as rotas são chamadas e inclusas na aplicação.
 
 # Estrutura 
 
@@ -61,21 +64,20 @@ loja virtual/
 
 # UML Textual
 
-| **CLASSE**         | **MÉTODOS**                                                                                      | **ATRIBUTOS**                                                   | **RELACIONAMENTOS** |
-|--------------------|--------------------------------------------------------------------------------------------------|-----------------------------------------------------------------|---------------------|
-| CancelamentoPedido | __init__, cancelar                                                                               | confirmar, id_do_carrinho, confirma_cep, num_pedido             | Herda de Pedido     |
-| Carrinho           | __init__, adicionarcarrinho, visualizarcarrinho, excluircarrinho, __len__                        | cpf, codigo_produto, quantidade, com_frete                      |                     |
-| Cliente            | __init__, getters e setters, CRUD                                                                | nome_cliente, email, cpf, rua, cep                              |                     |
-| Configuracoes      | tabela_frete, politica_de_cancelamento, orientacoes_da_aplicacao                                 |                                                                 |                     |
-| Expedicao          | __init__, marcar_envio, marcar_entregue                                                          | cod_entrega                                                     |                     |
-| Frete              | __init__, verificar_valor_frete                                                                  | cep                                                             |                     |
-| Pagamentos         | __init__, registrar_pagamento, alterar_status_pedido, atualizar_estoque                          | num_pedido, forma_pagamento, valor_pago, status, data_pagamento |                     |
-| Pedido             | __init__, calcular_subtotal_com_frete, calcular_subtotal, fechar_pedido, visualizar_meus_pedidos | confirmar, id_do_carrinho, confirma_cep                         |                     |
-| ProdutoFisico      | __init__, CRUD                                                                                   |  nome, codigo, categoria, preco_unitario, estoque, frete        | Herda de Produto    |
-| ProdutoDigital     | __init__, CRUD                                                                                   | nome, codigo, categoria, preco_unitario, estoque                | Herda de Produto    |
-| Produto            | __init__, getters e setters                                                                      |  nome, codigo, categoria, preco_unitario, estoque               |                     |
-| Relatorios         | __init__, faturamento_periodo, pedidos_por_cep, pedidos_por_status                               | data_relatorio                                                  |                     |
-
+| CLASSE             | MÉTODOS                                                                                          | ATRIBUTOS                                                       | RELACIONAMENTOS  |
+| ------------------ | ------------------------------------------------------------------------------------------------ | --------------------------------------------------------------- | ---------------- |
+| CancelamentoPedido | __init__, cancelar                                                                               | confirmar, id_do_carrinho, confirma_cep, num_pedido             | Herda de Pedido  |
+| Carrinho           | __init__, adicionarcarrinho, visualizarcarrinho, excluircarrinho, \__len__                       | cpf, codigo_produto, quantidade, com_frete                      |                  |
+| Cliente            | __init__, getters e setters, CRUD, \__eq__                                                       | nome_cliente, email, cpf, rua, cep                              |                  |
+| Configuracoes      | tabela_frete, politica_de_cancelamento, orientacoes_da_aplicacao                                 |                                                                 |                  |
+| Expedicao          | __init__, marcar_envio, marcar_entregue                                                          | cod_entrega                                                     |                  |
+| Frete              | __init__, verificar_valor_frete                                                                  | cep                                                             |                  |
+| Pagamentos         | __init__, registrar_pagamento, alterar_status_pedido, atualizar_estoque                          | num_pedido, forma_pagamento, valor_pago, status, data_pagamento |                  |
+| Pedido             | __init__, calcular_subtotal_com_frete, calcular_subtotal, fechar_pedido, visualizar_meus_pedidos | confirmar, id_do_carrinho, confirma_cep                         |                  |
+| ProdutoFisico      | __init__, CRUD, \__eq__, \__repr__                                                               | nome, codigo, categoria, preco_unitario, estoque, frete         | Herda de Produto |
+| ProdutoDigital     | __init__, CRUD                                                                                   | nome, codigo, categoria, preco_unitario, estoque                | Herda de Produto |
+| Produto            | __init__, getters e setters                                                                      | nome, codigo, categoria, preco_unitario, estoque                |                  |
+| Relatorios         | __init__, faturamento_periodo, pedidos_por_cep, pedidos_por_status                               | data_relatorio                                                  |                  |
 
 # Como executar
 
@@ -116,7 +118,7 @@ Agora clique em Execute. Se aparecer 200 como resposta como nesse caso:
 
 O programa foi executado com sucesso.
 
-Caso você digite alguma informação inválida com valores não condizentes aos solicitados como int no lugar de string ou dados de tamanho inferior ao solicitado será exibido o número 422 que indica que as informações não puderam ser processadas pelo servidor por serem inválidas.
+Caso você digite alguma informação inválida com valores não condizentes aos solicitados como int no lugar de string ou dados de tamanho inferior ao solicitado será exibido o número 400 ou 422 que indica que as informações não puderam ser processadas pelo servidor por serem inválidas e retorna um Value Error
 
 Além disso, também existem alguns testes na pasta testes que utilizam a biblioteca pytest. Para executá-los você deve digitar no terminal o comando: pytest testes/nomedoarquivo.py 
 
@@ -152,7 +154,7 @@ Intâncias de produto físico
 
 {
   "nome": "copo",
-  "cod": 1,
+  "cod": 50,
   "categoria": "utensilios",
   "preco": 3,
   "estoque": 3,
@@ -161,7 +163,7 @@ Intâncias de produto físico
 
 {
   "nome": "tijela",
-  "cod": 2,
+  "cod": 51,
   "categoria": "utensilios",
   "preco": 70,
   "estoque": 60,
@@ -170,7 +172,7 @@ Intâncias de produto físico
 
 {
   "nome": "garrafa",
-  "cod": 3,
+  "cod": 52,
   "categoria": "utensilios",
   "preco": 50,
   "estoque": 60,
@@ -181,7 +183,7 @@ Intâncias produto digital
 
 {
   "nome": "Ebook O pequeno príncipe",
-  "cod": 4,
+  "cod": 53,
   "categoria": "livro digital",
   "preco": 20,
   "estoque": 100
@@ -189,13 +191,20 @@ Intâncias produto digital
 
 {
   "nome": "Ebook O arco-íris do meu ser",
-  "cod": 5,
+  "cod": 54,
   "categoria": "livro digital",
   "preco": 30,
   "estoque": 100
 }
 
 Intâncias de carrinho
+
+{
+  "cpf": "86930258204",
+  "codigo_produto": 4,
+  "quantidade": 2,
+  "com_frete": "sim"
+}
 
 {
   "cpf": "34581049234",
@@ -219,6 +228,13 @@ Instâncias de pedido
   "confirma_cep": "63210000"
 }
 
+Para visualizar ou fazer calculos com pedidos
+
+{
+  "confirmar": "sim",
+  "cpf": "86930258204",
+  "confirma_cep": "63250000"
+}
 Para cancelamento de pedido
 
 {
@@ -239,24 +255,9 @@ Instâncias de pagamento
 
 Ceps disponíveis para teste
 
-63210000     
-63260000     
-63240000     
-63136000     
-63137000     
-63180000     
-63138000     
-63139000     
-63510000     
-63511000     
-63512000     
-63010900     
-63010905     
-63250000     
-63255000     
-63165000     
+63210000, 63260000, 63240000, 63136000, 63137000, 63180000, 63138000, 63139000, 63510000, 63511000, 63512000, 63010900 63010905, 63250000, 63255000, 63165000.  
 
-Para marcar envio cole o código gerado no momento do fechamento do pedido com frete após a confirmação do pagamento
+Para marcar envio cole o código gerado no momento do fechamento do pedido com frete após a confirmação do pagamento.
 
 Os relatórios não contêm parâmetros basta clicar em try it out e em execute que eles são gerados ou atualizados no arquivo json correspondente.
 

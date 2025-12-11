@@ -74,7 +74,7 @@ class CancelarPedido(Pedido):
                 cursor = conexao.cursor()
                 
                 partes = produtos_formatado.split('; ')
-                
+                #separar as partes do atributo produto no banco de dados que estão na tabela sepados por parenteses e ponto e vígula
                 for parte in partes:
                     if parte.strip(): 
                         try:

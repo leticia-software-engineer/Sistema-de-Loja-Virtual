@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 from Fonte.produto_fisico import ProdutoFisico
 from enum import Enum
@@ -19,15 +19,17 @@ class Produtofisico(BaseModel):
 
 @produtofisico_routes.post("/cadastrarprodutofisico/", response_model = None)
 def cadastrar(produtof: Produtofisico):
-
-    produtofisico = ProdutoFisico(
-        produtof.nome,
-        produtof.cod,
-        produtof.categoria,
-        produtof.preco,
-        produtof.estoque,
-        produtof.frete
-    )
+    try:
+        produtofisico = ProdutoFisico(
+            produtof.nome,
+            produtof.cod,
+            produtof.categoria,
+            produtof.preco,
+            produtof.estoque,
+            produtof.frete
+        )
+    except ValueError as erro:
+        raise HTTPException(status_code=400, detail=str(erro))
 
     resposta = produtofisico.cadastrar()
     return  {"dados": resposta}
@@ -35,22 +37,25 @@ def cadastrar(produtof: Produtofisico):
 @produtofisico_routes.post("/leituraprodutofisico/", response_model = None)
 def ler(produtof: Produtofisico):
 
-    produtofisico = ProdutoFisico(
-        produtof.nome,
-        produtof.cod,
-        produtof.categoria,
-        produtof.preco,
-        produtof.estoque,
-        produtof.frete
-    )
-
+    try:
+        produtofisico = ProdutoFisico(
+            produtof.nome,
+            produtof.cod,
+            produtof.categoria,
+            produtof.preco,
+            produtof.estoque,
+            produtof.frete
+        )
+    except ValueError as erro:
+        raise HTTPException(status_code=400, detail=str(erro))
     resposta = produtofisico.ler()
     return  {"dados": resposta}
 
 @produtofisico_routes.post("/atualizarprodutofisico/", response_model = None)
 def atualizar(produtof: Produtofisico):
 
-    produtofisico = ProdutoFisico(
+    try:
+        produtofisico = ProdutoFisico(
         produtof.nome,
         produtof.cod,
         produtof.categoria,
@@ -58,6 +63,8 @@ def atualizar(produtof: Produtofisico):
         produtof.estoque,
         produtof.frete
     )
+    except ValueError as erro:
+        raise HTTPException(status_code=400, detail=str(erro))
 
     resposta = produtofisico.atualizar()
     produto_atual = produtofisico.ler()
@@ -66,7 +73,8 @@ def atualizar(produtof: Produtofisico):
 @produtofisico_routes.post("/deletarprodutofisico/", response_model = None)
 def deletar(produtof: Produtofisico):
 
-    produtofisico = ProdutoFisico(
+    try:
+        produtofisico = ProdutoFisico(
         produtof.nome,
         produtof.cod,
         produtof.categoria,
@@ -74,6 +82,8 @@ def deletar(produtof: Produtofisico):
         produtof.estoque,
         produtof.frete
     )
+    except ValueError as erro:
+        raise HTTPException(status_code=400, detail=str(erro))
 
     resposta = produtofisico.deletar()
     return  {"dados": resposta}

@@ -82,3 +82,7 @@ class ProdutoDigital(Produto):
             conexao.close()
             return f"Produto não encontrado para excluir."
 
+#métodos especiais
+    def __str__(self):
+        return f"Produto: {self.nome} custa {self.__preco} R$"
+    

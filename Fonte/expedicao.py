@@ -5,7 +5,7 @@ import json
 class Expedicao():
     '''A classe expedição é responsável por armazenar as informações da entrega do produto após ele ser faturado. Essa classe vai gerar um identificador
 para a entrega e marcar como entregue quando o cliente receber, e o entregador informar.'''
-    def __init__(self, cod_entrega):
+    def __init__(self, cod_entrega: str):
         self.entrega = cod_entrega
     
     def marcar_envio(self):

@@ -1,16 +1,17 @@
 import sqlite3
 class Produto():
-    '''Deve registrar e realizar operações com os produtos, tais como:
-    cadastro, leitura, atualização e exclusão,
-    bem como deverá fazer ajustes em caso de movimentação do estoque.'''    
+    '''Deve servir como molde de produto trazendo propriedades com getters e setters e dados de inicialização 
+    comuns a qualquer produto, bem como métodos especiais'''    
 
-    def __init__(self, nome, codigo, categoria, preco_unitario, estoque):
+    def __init__(self, nome: str, codigo: int, categoria: str, preco_unitario: float, estoque: int):
+        #variáveis comuns em qualquer produto
         self.nome = nome
         self.cod = str(codigo)
         self.categoria = categoria
         self.preco = float(preco_unitario)
         self.estoque = estoque
 
+    #getters para codigo, preco e estoque com encapsulamento
     @property
     def cod(self):
         return self.__cod
@@ -21,30 +22,29 @@ class Produto():
     def estoque(self):
         return self.__estoque
     
+    #setters para codigo, preco e estoque com encapsulamento 
     @cod.setter
     def cod(self, codigo_valido):
+        #define que o codigo do produto não pode ser 0 ou negativo
         if len(codigo_valido) > 0:
             self.__cod = codigo_valido 
         else:
-            print("Codigo do produto não pode ser vazio")
+            raise ValueError("Codigo do produto não pode ser vazio")
 
     @preco.setter
     def preco(self, preco_positivo):
+        #informa que preco de produto nao pode 0 ou negativo
         if preco_positivo > 0:
             self.__preco = preco_positivo
         else:
-            print("O preço não pode ser zero ou negativo. ")
+            raise ValueError("O preço não pode ser zero ou negativo. ")
 
     @estoque.setter
     def estoque(self, estoque_v):
         if estoque_v >= 0:
+            #define que do estoque no momento da sua inserção não pode ser 0 ou negativo
             self.__estoque = estoque_v
         else:
-            print("O valor do estoque não pode ser negativo. ")
+            raise ValueError("O valor do estoque não pode ser negativo. ")
 
-    def __str__(self):
-        return f"Produto: {self.nome} custa {self.__preco} R$"
-    
-    def __repr__(self):
-        return f"Produto(nome='{self.nome}', cod='{self.__cod}', preco={self.__preco}, estoque={self.__estoque})"
     

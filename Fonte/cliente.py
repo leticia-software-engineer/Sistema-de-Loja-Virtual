@@ -3,12 +3,12 @@ import sqlite3
 class Cliente():
     '''A classe Cliente armazena os dados dos clientes, tais como: nome, cpf, endereço.  Realiza operações de CRUD e faz a validação das informações do cliente.
  '''
-    def __init__(self, nome_cliente, email, cpf, rua, cep):
+    def __init__(self, nome_cliente: str, email: str, cpf: str, rua: str, cep: str):
         self.nome_cliente = nome_cliente
         self.email = email
         self.cpf = cpf
-        self.rua = str(rua)
-        self.cep = str(cep)
+        self.rua = rua
+        self.cep = cep
 
     '''decoradores property com funçoes getters e setters para validar as informações de nome_cliente, email, cpf e rua além de adicionar encapsulamento a esses atributos'''
     #getters
@@ -34,36 +34,35 @@ class Cliente():
         if len(nome_valido) > 2:
             self.__nome = nome_valido
         else: 
-            print("Comprimento de nome_cliente inválido")
+            raise ValueError("Comprimento de nome_cliente inválido")
     @email.setter
     def email(self, email_valido):
         regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
         if re.fullmatch(regex, email_valido):
             self.__email = email_valido
         else:
-            print("Email invalido")
-        #usar biblioteca para validar email
-        pass
+            raise ValueError("Email invalido")
+        
     @cpf.setter
     def cpf(self, cpf_validacao):
         if len(cpf_validacao) == 11:
             self.__cpf = cpf_validacao
         else:
-            print("CPF deve conter 11 dígitos")
+            raise ValueError("CPF deve conter 11 dígitos")
             
     @rua.setter
     def rua(self, rua_valida):
         if len(rua_valida) > 0 :
             self.__rua = rua_valida
         else:
-            print("O nome da rua não foi informado")
+            raise ValueError("O nome da rua não foi informado")
 
     @cep.setter
     def cep(self, cep_valido):
         if len(cep_valido) == 8:
             self._cep = cep_valido
         else:
-            print("O cep deve conter 8 dígitos.")
+            raise ValueError("O cep deve conter 8 dígitos.")
     
     def __str__(self):
         #método especial para conversão em string
@@ -155,3 +154,8 @@ class Cliente():
             #se não foi excluída, é porque não foi encontrada
             return "Conta não encontrada."
 
+    def __eq__(self, outro):
+        if not isinstance(outro, Cliente):
+            return NotImplemented
+        return self.__cpf == outro.__cpf 
+    

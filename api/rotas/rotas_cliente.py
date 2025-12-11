@@ -17,13 +17,16 @@ class cliente(BaseModel):
 @cliente_routes.post("/acessodocliente/cadastrar/", response_model=None)
 def cadastrar(usuario: cliente):
 
-    cliente = Cliente(
-        usuario.nome,
-        usuario.email,
-        usuario.cpf,
-        usuario.rua,
-        usuario.cep
-    )
+    try:
+        cliente = Cliente(
+            usuario.nome,
+            usuario.email,
+            usuario.cpf,
+            usuario.rua,
+            usuario.cep
+        )
+    except ValueError as erro:
+        raise HTTPException(status_code=400, detail=str(erro))
 
     resultado = cliente.cadastrar()  
     return {"dados": resultado}
@@ -32,13 +35,16 @@ def cadastrar(usuario: cliente):
 @cliente_routes.post("/acessodocliente/ler/", response_model=None)
 def ler(usuario: cliente):
 
-    cliente = Cliente(
-        usuario.nome,
-        usuario.email,
-        usuario.cpf,
-        usuario.rua,
-        usuario.cep
-    )
+    try:
+        cliente = Cliente(
+            usuario.nome,
+            usuario.email,
+            usuario.cpf,
+            usuario.rua,
+            usuario.cep
+        )
+    except ValueError as erro:
+        raise HTTPException(status_code=400, detail=str(erro))
 
     resposta = cliente.ler()  
 
@@ -47,14 +53,16 @@ def ler(usuario: cliente):
 @cliente_routes.post("/acessodocliente/atualizar/", response_model=None)
 def atualizar(usuario: cliente):
 
-    cliente = Cliente(
+    try:
+        cliente = Cliente(
         usuario.nome,
         usuario.email,
         usuario.cpf,
         usuario.rua,
         usuario.cep
     )
-
+    except ValueError as erro:
+        raise HTTPException(status_code=400, detail=str(erro))
     resposta = cliente.atualizar() 
     responda = cliente.ler() 
 
@@ -63,13 +71,16 @@ def atualizar(usuario: cliente):
 @cliente_routes.post("/acessodocliente/deletar/", response_model=None)
 def deletar(usuario: cliente):
 
-    cliente = Cliente(
+    try:
+        cliente = Cliente(
         usuario.nome,
         usuario.email,
         usuario.cpf,
         usuario.rua,
         usuario.cep
     )
+    except ValueError as erro:
+        raise HTTPException(status_code=400, detail=str(erro))
 
     resposta = cliente.deletar() 
 

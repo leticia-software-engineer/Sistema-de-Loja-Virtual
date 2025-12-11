@@ -8,7 +8,7 @@ class Pedido():
     '''A classe Pedido armazena todos os dados da compra e a partir das informações gera um cupom da venda, além disso ela é responsável por permitir 
 o cancelamento de um pedido seguindo as políticas de cancelamento informadas nas configurações.'''
 
-    def __init__(self, confirmar, id_do_carrinho, confirma_cep):
+    def __init__(self, confirmar: str, id_do_carrinho: str, confirma_cep: str):
         
         self.data_pedido = datetime.now()
         self.confirmar = str(confirmar)

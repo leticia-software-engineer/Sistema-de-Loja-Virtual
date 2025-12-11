@@ -2,6 +2,10 @@ import sqlite3
 from Fonte.produto import Produto
 
 class ProdutoFisico(Produto):
+
+    '''A classe ProdutoFisico herda de produto todos os seus atributos e métodos e possui metodos e atributos adicionais que são
+    o CRUD, que adiciona, lê, atualiza e deleta informacoes desses produtos do banco de dados e possui o atributo frete como obrigatório'''
+   
     def __init__(self, nome, codigo, categoria, preco_unitario, estoque, frete = "sim"):
         super().__init__(nome, codigo, categoria, preco_unitario, estoque)
         self.nome = nome
@@ -10,15 +14,19 @@ class ProdutoFisico(Produto):
         self.__preco = float(preco_unitario)
         self.__estoque = estoque
         self.frete = frete
+
 #CRUD
     def cadastrar(self):
         
         conexao = sqlite3.connect("loja virtual.db")
         cursor = conexao.cursor()
 
+        #Confere se já existe algum produto com o codigo escolhido pelo usuario cadastrado para algum outro produto
         sql_checar = "SELECT cod FROM produto WHERE cod = ?"
         cursor.execute(sql_checar, (self.__cod,))
         pesq = cursor.fetchone()
+
+        #se não encontra adiciona no banco
         if pesq == None:
             sql_inserir = """
             INSERT INTO produto(nome, cod, categoria, preco, estoque, frete)
@@ -32,6 +40,7 @@ class ProdutoFisico(Produto):
             return f"Produto {self.nome} cadastrado com sucesso."
            
         else: 
+            #se encontra não adiciona
             conexao.close()
             return "Já existe um produto cadastrado com esse codigo"
 
@@ -84,3 +93,10 @@ class ProdutoFisico(Produto):
             conexao.close()
             return f"Produto não encontrado para excluir."
 
+    def __repr__(self):
+        return f"Produto(nome='{self.nome}', cod='{self.__cod}', preco={self.__preco}, estoque={self.__estoque})"
+    
+    def __eq__(self, outro):
+        if not isinstance(outro, ProdutoFisico):
+            return NotImplemented
+        return self.__cod == outro.__cod

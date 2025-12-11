@@ -9,6 +9,7 @@ class Relatorio():
     '''A classe Relatorio é responsável por gerar os relatórios de faturamento por periodo, ranking dos produtos mais vendidos
     quantidade de vendas por Estado, categoria e status de pedidos'''
     def __init__(self):
+        #a data da geração do relatório é guardada na variavel self.data_relatorio
         self.data_relatorio = date.today()
         
     def faturamento_periodo(self):
@@ -45,13 +46,14 @@ class Relatorio():
                 faturamento_por_mes[mes] += valor
                 faturamento_por_dia[dia] += valor
         
+        #organizando o dicionario
         relatorio_data = {
             "data_geracao": date.today().strftime('%Y-%m-%d'),
             "faturamento_mensal": dict(faturamento_por_mes),
             "faturamento_diario": dict(faturamento_por_dia)
         }
             
-        
+        #criando o arquivo json com as informacoes
         json_string = json.dumps(relatorio_data, indent=4) 
         nome_arquivo = "relatorio_faturamento.json"
         with open(nome_arquivo, 'w', encoding='utf-8') as f:
@@ -103,19 +105,25 @@ class Relatorio():
             return "Não foi encontrado nenhum pedido"
         else:
             lista_status_encontrados = []
+            #para cada pedido encontrado pegar o status adicionar numa lista e contar os itens da lista usando Counter
             for status in status_pedidos:
                 lista_status_encontrados.append(status)
             contar = Counter(lista_status_encontrados)
+            #criar dicionario com as informacoes
             dicionario = dict(contar)
 
             dicionario_para_guardar = {status_em_tupla[0]: quant for status_em_tupla, quant in dicionario.items()}
             quantidade_total = 0
+            #criar listas para porcentagens para cada status
             porcentagens = []
             lista_status_porcentagem = []
 
+            #Pegar os valor do dicionario para guardar e fazer a soma da quantidade total de status encontrados um por pedido
             for quantidade in dicionario_para_guardar.values():
                 pedidos_por_status = quantidade
                 quantidade_total += quantidade
+
+            #Fazer o calculo da porcentagem iterando por cada status e guardar na lista de porcentagens
             for status in dicionario_para_guardar.values():
                 porcentagem = (status/quantidade_total)*100
                 porcentagens.append(f'{porcentagem: .2f} %')
@@ -129,7 +137,8 @@ class Relatorio():
                 lista_status_porcentagem.append(chave)
                 lista_status_porcentagem.append(f'{porcentagem: .2f} %')
 
+        #guardar os dados do relatório no json
         relatorio_pedidos_status = "relatorio de pedidos por status.json"                    
         with open(relatorio_pedidos_status, "w", encoding="utf-8") as arquivo:
             json.dump(dicionario_para_guardar, arquivo, ensure_ascii=False, indent=4)
-        return f"Essa foi a porcentagem encontrada para cada status {lista_status_porcentagem} \nPara mais detalhes leia as quantidades de pedidos para cada status no arquivo {relatorio_pedidos_status}"            
+        return f"Essa foi a porcentagem encontrada para cada status {lista_status_porcentagem} Para mais detalhes leia as quantidades de pedidos para cada status no arquivo {relatorio_pedidos_status}"            
