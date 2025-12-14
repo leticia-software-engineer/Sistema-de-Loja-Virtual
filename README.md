@@ -78,6 +78,8 @@ loja virtual/
 | ProdutoDigital     | __init__, CRUD                                                                                   | nome, codigo, categoria, preco_unitario, estoque                | Herda de Produto |
 | Produto            | __init__, getters e setters                                                                      | nome, codigo, categoria, preco_unitario, estoque                |                  |
 | Relatorios         | __init__, faturamento_periodo, pedidos_por_cep, pedidos_por_status                               | data_relatorio                                                  |                  |
+| NotaFiscal         | __init__, ver_nota                                                                               | num_pedido                                                      |                  |
+
 
 # Como executar
 
@@ -262,3 +264,7 @@ Para marcar envio cole o código gerado no momento do fechamento do pedido com f
 Os relatórios não contêm parâmetros basta clicar em try it out e em execute que eles são gerados ou atualizados no arquivo json correspondente.
 
 As configurações também não têm parâmetros mas podem ser visualizadas usando o mesmo comando só que diretamente na documentação do FastAPI
+
+# Decisões de Design
+
+A escolha da linguagem python foi dada para o projeto por sua simplicidade e sintaxe de alto nível por ser mais fácil e rápida para desenvolver um projeto back end. Como banco de dados escolhi o SQLite por ser um banco mais compacto, embutido e simples de manipular dentro de pequenos sistemas, e para a construção da API optei pelo FastAPI que possui uma interface simples e adaptável com a biblioteca do python Pydantic sem a necessidade de usar ORM. 

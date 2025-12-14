@@ -25,20 +25,25 @@ para a entrega e marcar como entregue quando o cliente receber, e o entregador i
         status_formatado = str(status)
 
         if dados:
-            if status_formatado == "pago" or status_formatado == "pago parcialmente":
-                novo_status = "Enviado"
+            status_atual = dados[0] 
 
-                atualizar_status = "UPDATE pedido SET status = ? WHERE cod_entrega = ?"
-                dados = (novo_status, self.entrega)
-                cursor.execute(atualizar_status, dados)
-                conexao.commit()
+            if status_atual == "Enviado":
                 conexao.close()
-                if cursor.rowcount == 1:
+                return "Esse produto já foi enviado"
+
+            elif status_atual == "pago" or status_atual == "pago parcialmente":
+                novo_status = "Enviado"
+                
+                atualizar_status = "UPDATE pedido SET status = ? WHERE cod_entrega = ?"
+                cursor.execute(atualizar_status, (novo_status, self.entrega)) 
+
+                conexao.commit()
+
+                if cursor.rowcount > 0:
                     return "Produto enviado."
                 else:
                     return "Erro ao atualizar o banco de dados"
-            elif status_formatado == "Enviado":
-                return "Esse produto já foi enviado"
+            
             else:
                 return "Esse pedido ainda não foi enviado. Verifique nossa politica de envio."
         else:

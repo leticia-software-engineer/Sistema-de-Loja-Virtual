@@ -2,7 +2,6 @@ import uuid
 import json
 import sqlite3
 from datetime import datetime
-#from carrinho import Carrinho as car
 
 class Pedido():
     '''A classe Pedido armazena todos os dados da compra e a partir das informações gera um cupom da venda, além disso ela é responsável por permitir 
@@ -159,7 +158,7 @@ o cancelamento de um pedido seguindo as políticas de cancelamento informadas na
                     if pedido:
                         id_pedido, frete, cod_entrega = pedido
                         frete_formatado = float(frete)
-                        if frete != None:
+                        if frete != "0":
                             self.cod_entrega = str(uuid.uuid1())
                             atualizar = """UPDATE pedido SET cod_entrega = ? WHERE cod_carrinho = ?"""
                             dados = (self.cod_entrega, self.id_do_carrinho)

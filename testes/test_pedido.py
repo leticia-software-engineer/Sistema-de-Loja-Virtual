@@ -16,3 +16,7 @@ def test_visualizar_pedidos_feitos():
     instancia.visualizar_meus_pedidos()
     assert instancia
 
+def test_calculo_de_subtotal_pedido_frete():
+    instancia = Pedido("sim", "11012667324", "63210000")
+    instancia.calcular_subtotal_com_frete()
+    assert instancia

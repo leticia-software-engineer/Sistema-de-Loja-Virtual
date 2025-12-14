@@ -25,16 +25,6 @@ class cancelarpedidos(BaseModel):
 class mostrarnota(BaseModel):
     num_pedido: int = Field(..., gt=0)
 
-@pedido_routes.post("/calculodosubtotal", response_model=None)
-def calcular(pedidox: pedidos):
-
-    pedidoacalcular = Pedido(
-        pedidox.confirmar,
-        pedidox.cpf,
-        pedidox.confirma_cep )
-
-    resposta = pedidoacalcular.calcular_subtotal()
-    return  {"dados": resposta}
 
 @pedido_routes.post("/calculodosubtotalpedidoscomfrete", response_model=None)
 def calcular(pedidox: pedidos):
