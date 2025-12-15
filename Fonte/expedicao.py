@@ -82,6 +82,9 @@ para a entrega e marcar como entregue quando o cliente receber, e o entregador i
                                         status = "Entregue"
                                         dados = (status, self.entrega)
                                         cursor.execute(atualizar_status, dados)
+                                        conexao.commit()
+                                        conexao.close()
+
                                         if cursor.rowcount != 0:
                                             return "Produto enviado."
                                         else:

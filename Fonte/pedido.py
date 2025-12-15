@@ -158,14 +158,14 @@ o cancelamento de um pedido seguindo as políticas de cancelamento informadas na
                     if pedido:
                         id_pedido, frete, cod_entrega = pedido
                         frete_formatado = float(frete)
-                        if frete != "0":
+                        if self.frete != 0:
                             self.cod_entrega = str(uuid.uuid1())
                             atualizar = """UPDATE pedido SET cod_entrega = ? WHERE cod_carrinho = ?"""
                             dados = (self.cod_entrega, self.id_do_carrinho)
                             cursor.execute(atualizar, dados)
                             conexao.commit()
 
-                            if cursor.rowcount > 0:
+                            if cursor.rowcount != 0:
                                 conexao.close()
                                 return f"Pedido habilitado para frete. Código de rasteamento {self.cod_entrega}"
                             
@@ -178,6 +178,79 @@ o cancelamento de um pedido seguindo as políticas de cancelamento informadas na
                     else:
                         conexao.close()
                         return "Pedido não encontrado"
+
+
+    def fechar_pedido_frete(self):
+        if self.confirmar.lower() != "sim":
+            return "Pedido não confirmado foi cancelado."
+        elif self.total == 0:
+            return "Subtotal não calculado."
+        else:
+            #pegar os itens do carrinho e fechar o pedido
+            conexao = sqlite3.connect("loja virtual.db")
+            cursor = conexao.cursor()
+            sql_ver_cliente = """SELECT nome FROM cliente WHERE cpf = ?"""
+            cursor.execute(sql_ver_cliente, (self.id_do_carrinho,))
+            cliente_encontrado = cursor.fetchall()
+
+            if cliente_encontrado:
+                sql_conferir_carrinho = """SELECT cod, quantidade FROM carrinho WHERE cod_carrinho= ?"""
+                cursor.execute(sql_conferir_carrinho, (self.id_do_carrinho,))
+                carrinho = cursor.fetchall()
+                
+                if carrinho:
+                    self.data = datetime.now()
+                    status = "Aguardando pagamento"
+                    produtos_str = []
+                    for produto in carrinho:
+                        cod, quantidade = produto
+                        produtos_str.append(f"{cod} ({quantidade})")
+
+                    produtos_para_db = "; ".join(produtos_str)
+                                        
+                    #fechar o pedido  
+                    sql_insert_pedido = """
+                    INSERT INTO pedido (data, total, status, cod_carrinho, produtos, frete, cod_entrega, confirme_cep)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                    """
+                    data_formatada = self.data.isoformat()
+                    valores = (data_formatada, self.total, status, self.id_do_carrinho, produtos_para_db, self.frete, self.cod_entrega, self.confirmar_cep)
+                    
+                    cursor.execute(sql_insert_pedido, valores)
+                    conexao.commit()
+                    print("Pedido fechado")
+                    sql_esvaziar_carrinho = """DELETE FROM carrinho WHERE cod_carrinho = ?"""
+                    cursor.execute(sql_esvaziar_carrinho, (self.id_do_carrinho,))
+                    conexao.commit()
+                    
+                    visualizar = """SELECT cod_carrinho, frete, cod_entrega from pedido where cod_carrinho = ?"""
+                    cursor.execute(visualizar, (self.id_do_carrinho,))
+                    pedido = cursor.fetchone()
+
+                    if pedido:
+                        id_pedido, frete, cod_entrega = pedido
+                        frete_formatado = float(frete)
+                        if self.frete != 0:
+                            self.cod_entrega = str(uuid.uuid1())
+                            atualizar = """UPDATE pedido SET cod_entrega = ? WHERE cod_carrinho = ?"""
+                            dados = (self.cod_entrega, self.id_do_carrinho)
+                            cursor.execute(atualizar, dados)
+                            conexao.commit()
+
+                            if cursor.rowcount != 0:
+                                conexao.close()
+                                return f"Pedido habilitado para frete. Código de rasteamento {self.cod_entrega}"
+                            
+                            else:
+                                conexao.close()
+                                return "Pedido fechado não habilitado para frete"
+                        else:
+                            conexao.close()
+                            return "Pedido fechado não habilitado para frete"
+                    else:
+                        conexao.close()
+                        return "Pedido não encontrado"
+                        
     def visualizar_meus_pedidos(self):
         conexao = sqlite3.connect("loja virtual.db")
         cursor = conexao.cursor()

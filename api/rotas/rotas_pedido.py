@@ -59,8 +59,8 @@ def fechar(pedidox: fechar_pedidos):
         pedidox.confirma_cep )
 
     resposta1 = pedidoafechar.calcular_subtotal_com_frete()
-    resposta = pedidoafechar.fechar_pedido()
-    return  {"dados": resposta}
+    resposta2 = pedidoafechar.fechar_pedido()
+    return  {"dados": resposta2}
 
 
 @pedido_routes.post("/verpedidos", response_model=None)
