@@ -253,6 +253,7 @@ o cancelamento de um pedido seguindo as políticas de cancelamento informadas na
                         
 
 class VisualizarPedidos():
+    #classe usada para a visualização dos pedidos por cpf no momento da requisicao
     def __init__(self, cpf):
         self.id_do_carrinho = cpf
     def visualizar_meus_pedidos(self):

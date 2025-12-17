@@ -12,7 +12,7 @@ de produtos na plataforma, o prazo de validade dos cupons, limite de parcelas e 
             dados = json.load(arq)
             
             tabela = pandas.DataFrame(dados)
-            return tabela
+            return f"{tabela}"
 
     def politica_de_cancelamento(self, arquivo = "settings.json"):
         #exibe a politica de cancelamento do sistema, explicando as regras de cancelamento de um pedido

@@ -118,6 +118,7 @@ class ProdutoFisico(Produto):
         return self.__cod == outro.__cod
     
 class LerProdutos():
+    #classe criada para fazer a leitura dos produtos pelo codigo no momento da requisicao
 
     def __init__(self, cod):
         self.cod = cod

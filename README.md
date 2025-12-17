@@ -17,8 +17,7 @@ loja virtual/
 │   │   ├── rotas_frete.py<br>
 │   │   ├── rotas_pagamento.py<br>
 │   │   ├── rotas_pedido.py<br>
-│   │   ├── rotas_produto_digital.py<br>
-│   │   ├── rotas_produto_fisico.py<br>
+│   │   ├── rotas_produto.py<br>
 │   │   ├── rotas_relatorios.py<br>
 │   │   ├── rotascarrinho.py<br>
 |   │   └── rotasconfig.py<br>
@@ -83,7 +82,7 @@ loja virtual/
 
 # Como executar
 
-Para executar o sistema de loja virtual, primeiramente será necessário possuir o python instalado no seu computador em uma versão entre 3.11 e 3.13. Após isso, você deve fazer o download de todos os arquivos do projeto e instalar as bibliotecas presentes no arquivo requirements.txt usando o comando pip install -r requirements.txt. Após a instalação das bibliotecas, para executar o programa usando o FastAPI digite no terminal o comando:  uvicorn main:app --reload  
+Para executar o sistema de loja virtual, primeiramente será necessário possuir o python instalado no seu computador em uma versão entre 3.11 e 3.13. Após isso, você deve fazer o download de todos os arquivos do projeto e instalar as bibliotecas presentes no arquivo requirements.txt usando o comando **pip install -r requirements.txt** . Após a instalação das bibliotecas, para executar o programa usando o FastAPI digite no terminal o comando:  **uvicorn main:app --reload** 
 Depois de inicializar o uvicorn, um link será exibido no terminal
 
 <img width="1087" height="192" alt="image" src="https://github.com/user-attachments/assets/6bb5d189-de90-4232-9203-b0a431499b7c" />
