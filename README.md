@@ -79,7 +79,7 @@ loja virtual/
 | Relatorios         | __init__, faturamento_periodo, pedidos_por_cep, pedidos_por_status                               | data_relatorio                                                  |                  |
 | NotaFiscal         | __init__, ver_nota                                                                               | num_pedido                                                      |                  |
 
-
+Observação: As classes LerProdutos e Visualizar pedidos foram adicionadas posteriormente. LerProdutos tem com método a leitura dos dados de produtos usando codigo como atributo enquanto VisualizarPedidos tem como atributo o cpf e como método Visualizarmeuspedidos para que o cliente consiga ver seus pedidos apenas a partir do seu cpf.
 # Como executar
 
 Para executar o sistema de loja virtual, primeiramente será necessário possuir o python instalado no seu computador em uma versão entre 3.11 e 3.13. Após isso, você deve fazer o download de todos os arquivos do projeto e instalar as bibliotecas presentes no arquivo requirements.txt usando o comando **pip install -r requirements.txt** . Após a instalação das bibliotecas, para executar o programa usando o FastAPI digite no terminal o comando:  **uvicorn main:app --reload** 

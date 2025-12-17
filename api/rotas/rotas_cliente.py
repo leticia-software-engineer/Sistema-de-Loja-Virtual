@@ -39,11 +39,7 @@ def ler(usuario: lerCliente):
 
     try:
         cliente = Cliente(
-            usuario.nome,
-            usuario.email,
-            usuario.cpf,
-            usuario.rua,
-            usuario.cep
+            usuario.cpf
         )
     except ValueError as erro:
         raise HTTPException(status_code=400, detail=str(erro))
