@@ -13,6 +13,8 @@ class cliente(BaseModel):
     rua: str
     cep: str = Field(..., min_length=8, max_length=8)
 
+class lerCliente(BaseModel):
+    cpf: str = Field(min_length=11, max_length=11)
 
 @cliente_routes.post("/acessodocliente/cadastrar/", response_model=None)
 def cadastrar(usuario: cliente):
@@ -33,6 +35,30 @@ def cadastrar(usuario: cliente):
 
 
 @cliente_routes.post("/acessodocliente/ler/", response_model=None)
+def ler(usuario: lerCliente):
+
+    try:
+        cliente = Cliente(
+            usuario.nome,
+            usuario.email,
+            usuario.cpf,
+            usuario.rua,
+            usuario.cep
+        )
+    except ValueError as erro:
+        raise HTTPException(status_code=400, detail=str(erro))
+
+    resposta = cliente.ler()  
+
+    return {"dados": resposta}
+
+@cliente_routes.get("/leituratodososclientes/", response_model = None)
+def ler_tudo():
+
+    resposta = Cliente.listar()
+    return  {"dados": resposta}
+
+@cliente_routes.post("/acessodocliente/ler/", response_model=None)
 def ler(usuario: cliente):
 
     try:
@@ -49,6 +75,7 @@ def ler(usuario: cliente):
     resposta = cliente.ler()  
 
     return {"dados": resposta}
+
 
 @cliente_routes.post("/acessodocliente/atualizar/", response_model=None)
 def atualizar(usuario: cliente):

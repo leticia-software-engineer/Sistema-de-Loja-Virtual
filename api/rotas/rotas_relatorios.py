@@ -4,7 +4,7 @@ from Fonte.relatorio import Relatorio
 relatorios_routes = APIRouter(prefix= "/relatorio", tags=["relatorio"])
 
 
-@relatorios_routes.post("/relatoriofaturamento")
+@relatorios_routes.get("/relatoriofaturamento")
 def relatoriofaturamento():
 
     relatorio = Relatorio()
@@ -13,7 +13,7 @@ def relatoriofaturamento():
     return resposta
 
 
-@relatorios_routes.post("/relatoriopedidosporcep")
+@relatorios_routes.get("/relatoriopedidosporcep")
 def relatoriocep():
 
     relatorio = Relatorio()
@@ -22,7 +22,7 @@ def relatoriocep():
     return resposta
 
 
-@relatorios_routes.post("/relatoriopedidosporstatus")
+@relatorios_routes.get("/relatoriopedidosporstatus")
 def relatorioporstatus():
 
     relatorio = Relatorio()

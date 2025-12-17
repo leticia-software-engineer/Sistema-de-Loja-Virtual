@@ -45,6 +45,22 @@ class ProdutoFisico(Produto):
             return "Já existe um produto cadastrado com esse codigo"
 
 
+    @classmethod
+    def listar(self):
+        conexao = sqlite3.connect("loja virtual.db")
+        cursor = conexao.cursor()
+
+        sql_buscar = """SELECT nome, cod, categoria, preco, estoque FROM produto"""
+        cursor.execute(sql_buscar)
+        resultado = cursor.fetchall() 
+        
+        if resultado: 
+            conexao.close()
+            return resultado
+        else:
+            conexao.close()
+            return "Produtos não encontrados"
+
     def ler(self):
         conexao = sqlite3.connect("loja virtual.db")
         cursor = conexao.cursor()
@@ -100,3 +116,23 @@ class ProdutoFisico(Produto):
         if not isinstance(outro, ProdutoFisico):
             return NotImplemented
         return self.__cod == outro.__cod
+    
+class LerProdutos():
+
+    def __init__(self, cod):
+        self.cod = cod
+    def ler(self):
+        conexao = sqlite3.connect("loja virtual.db")
+        cursor = conexao.cursor()
+
+        sql_buscar = """SELECT nome, cod, categoria, preco FROM produto WHERE COD = ?"""
+
+        cursor.execute(sql_buscar, (self.cod,))
+        resultado = cursor.fetchone() 
+        
+        if resultado: 
+            conexao.close()
+            return resultado
+        else:
+            conexao.close()
+            return "Produto não encontrado"

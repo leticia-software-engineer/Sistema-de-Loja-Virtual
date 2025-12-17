@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from pydantic import BaseModel, Field
-from Fonte.pedido import Pedido
+from Fonte.pedido import Pedido, VisualizarPedidos
 from Fonte.cancelamento_pedido import CancelarPedido
 from Fonte.nota import NotaFiscal
 
@@ -24,6 +24,9 @@ class cancelarpedidos(BaseModel):
 
 class mostrarnota(BaseModel):
     num_pedido: int = Field(..., gt=0)
+
+class verMeuspedidos(BaseModel):
+    cpf: str = Field(..., min_length=11, max_length=11)
 
 
 @pedido_routes.post("/calculodosubtotalpedidoscomfrete", response_model=None)
@@ -65,12 +68,10 @@ def fechar(pedidox: fechar_pedidos):
 
 @pedido_routes.post("/verpedidos", response_model=None)
 
-def ver(pedidox: pedidos):
+def ver(pedidox: verMeuspedidos):
 
-    pedidover = Pedido(
-        pedidox.confirmar,
-        pedidox.cpf,
-        pedidox.confirma_cep )
+    pedidover = VisualizarPedidos(
+        pedidox.cpf)
 
     resposta = pedidover.visualizar_meus_pedidos()
     return  {"dados": resposta}

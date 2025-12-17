@@ -4,7 +4,7 @@ from Fonte.configuracoes import Configuracoes
 configuracoes_routes = APIRouter(prefix= "/configuracoes", tags=["configuracoes"])
 
 
-@configuracoes_routes.post("/tabelafrete")
+@configuracoes_routes.get("/tabelafrete")
 def tabelafrete():
 
     configuracoes = Configuracoes()
@@ -13,7 +13,7 @@ def tabelafrete():
     return f"{resposta}"
 
 
-@configuracoes_routes.post("/cancelamentopolitica")
+@configuracoes_routes.get("/cancelamentopolitica")
 def cancelamentoorientacoes():
 
     configuracoes = Configuracoes()
@@ -22,7 +22,7 @@ def cancelamentoorientacoes():
     return resposta
 
 
-@configuracoes_routes.post("/orientacoes")
+@configuracoes_routes.get("/orientacoes")
 def orientacoesdeuso():
 
     configuracoes = Configuracoes()

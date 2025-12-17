@@ -1,5 +1,5 @@
 {
     "pago": 1,
-    "pago parcialmente": 1,
-    "Aguardando pagamento": 1
+    "pago parcialmente": 2,
+    "Cancelado": 1
 }

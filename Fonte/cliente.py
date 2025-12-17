@@ -116,6 +116,23 @@ class Cliente():
             #se não encontradas, exibe mensagem
             conexao.close()
             return "Cliente não encontrado. "
+        
+    @classmethod
+    def listar(self):
+        conexao = sqlite3.connect("loja virtual.db")
+        cursor = conexao.cursor()
+
+        sql_buscar = """SELECT nome, email, cpf, rua, cep FROM cliente"""
+        cursor.execute(sql_buscar)
+        resultado = cursor.fetchall() 
+        
+        if resultado: 
+            conexao.close()
+            return resultado
+        else:
+            conexao.close()
+            return "Clientes não foram encontrados"
+        
 
     def atualizar(self):
         

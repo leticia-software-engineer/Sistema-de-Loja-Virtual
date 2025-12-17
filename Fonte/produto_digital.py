@@ -34,21 +34,6 @@ class ProdutoDigital(Produto):
             conexao.close()
             return "Já existe um produto cadastrado com esse codigo"
 
-    def ler(self):
-        conexao = sqlite3.connect("loja virtual.db")
-        cursor = conexao.cursor()
-
-        sql_buscar = """SELECT nome, cod, categoria, preco FROM produto WHERE COD = ?"""
-
-        cursor.execute(sql_buscar, (self.cod,))
-        resultado = cursor.fetchone() 
-        
-        if resultado: 
-            conexao.close()
-            return resultado
-        else:
-            conexao.close()
-            return "Produto não encontrado"
     
     def atualizar(self):
         conexao = sqlite3.connect("loja virtual.db")

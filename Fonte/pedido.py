@@ -251,6 +251,10 @@ o cancelamento de um pedido seguindo as políticas de cancelamento informadas na
                         conexao.close()
                         return "Pedido não encontrado"
                         
+
+class VisualizarPedidos():
+    def __init__(self, cpf):
+        self.id_do_carrinho = cpf
     def visualizar_meus_pedidos(self):
         conexao = sqlite3.connect("loja virtual.db")
         cursor = conexao.cursor()
